@@ -1,0 +1,276 @@
+
+/* Contenedor principal */
+.seccion-seguridad {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  text-align: left;
+  scroll-margin-top: 85px;
+}
+
+/* Encabezado */
+.seguridad-header {
+  margin-bottom: 32px;
+}
+
+.seguridad-etiqueta {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.seguridad-header h2 {
+  margin-bottom: 10px;
+}
+
+.seguridad-header > p {
+  max-width: 720px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Bloques de contenido */
+.seguridad-bloque {
+  margin-top: 32px;
+}
+
+.seguridad-subheader {
+  margin-bottom: 18px;
+}
+
+.seguridad-subheader h3 {
+  margin: 0 0 6px;
+  color: var(--text-h);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.seguridad-subheader p {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Principios CID */
+.seguridad-cia-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.seccion-seguridad .seguridad-cia-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.seguridad-cia-icono {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 23px;
+}
+
+.seguridad-cia-card h4 {
+  margin: 0 0 10px;
+  color: var(--text-h);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.seguridad-cia-card p {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* Tabla de clasificación */
+.seguridad-tabla-contenedor {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.seguridad-tabla {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.seguridad-tabla th,
+.seguridad-tabla td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.seguridad-tabla th {
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.seguridad-tabla td {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.seguridad-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.seguridad-tabla tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.seguridad-tabla tbody tr:hover {
+  background: var(--accent-bg);
+}
+
+/* Etiquetas de clasificación */
+.seguridad-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Medidas físicas y lógicas */
+.seguridad-medidas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.seccion-seguridad .seguridad-medidas-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.seguridad-medidas-titulo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.seguridad-medidas-icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.seguridad-medidas-titulo h4 {
+  margin: 0 0 4px;
+  color: var(--text-h);
+  font-size: 17px;
+}
+
+.seguridad-medidas-titulo p {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Lista de medidas */
+.seguridad-lista {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.seguridad-lista li {
+  position: relative;
+  padding: 0 0 0 24px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.seguridad-lista li::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Tabletas */
+@media (max-width: 900px) {
+  .seguridad-cia-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .seguridad-medidas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+  .seccion-seguridad {
+    padding: 24px 16px;
+  }
+
+  .seccion-seguridad .seguridad-cia-card,
+  .seccion-seguridad .seguridad-medidas-card {
+    padding: 18px;
+  }
+
+  .seguridad-cia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seguridad-subheader h3 {
+    font-size: 18px;
+  }
+
+  .seguridad-tabla th,
+  .seguridad-tabla td {
+    padding: 12px;
+  }
+}

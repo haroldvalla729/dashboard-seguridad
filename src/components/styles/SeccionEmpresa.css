@@ -1,0 +1,252 @@
+
+/* Contenedor de la sección */
+.seccion-empresa {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  text-align: left;
+  scroll-margin-top: 85px;
+}
+
+/* Encabezado */
+.empresa-header {
+  margin-bottom: 28px;
+}
+
+.empresa-etiqueta {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.empresa-header h2 {
+  margin-bottom: 10px;
+}
+
+.empresa-header > p {
+  max-width: 680px;
+  color: var(--text);
+  font-size: 15px;
+}
+
+/* Distribución de perfil y procesos */
+.empresa-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Tarjetas */
+.seccion-empresa .card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+}
+
+.empresa-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.empresa-card-title h3 {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.empresa-icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Datos empresariales */
+.empresa-nombre {
+  margin: 0 0 18px;
+  color: var(--text-h);
+  font-size: 20px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.empresa-perfil > p {
+  margin-bottom: 12px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.empresa-perfil strong {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+/* Misión */
+.empresa-mision {
+  margin-top: 22px;
+  padding: 16px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--accent-bg);
+}
+
+.empresa-mision h4 {
+  margin: 0 0 8px;
+  color: var(--text-h);
+  font-size: 14px;
+}
+
+.empresa-mision p {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* Lista de procesos */
+.empresa-lista {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empresa-lista li {
+  position: relative;
+  padding: 12px 14px 12px 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.empresa-lista li::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 19px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Activos tecnológicos */
+.empresa-activos {
+  margin-top: 36px;
+}
+
+.empresa-activos-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.empresa-activos-header h3 {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.empresa-activos-total {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Cuadrícula adaptable de activos */
+.empresa-activos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.seccion-empresa .empresa-activo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  min-height: 76px;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.empresa-activo:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+}
+
+.empresa-activo-indicador {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+/* Tabletas */
+@media (max-width: 900px) {
+  .empresa-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .empresa-activos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+  .seccion-empresa {
+    padding: 24px 16px;
+  }
+
+  .seccion-empresa .card {
+    padding: 18px;
+  }
+
+  .empresa-activos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .empresa-activos-header {
+    align-items: flex-start;
+  }
+
+  .empresa-nombre {
+    font-size: 18px;
+  }
+}

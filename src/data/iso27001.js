@@ -1,0 +1,16 @@
+export const controlesISO = [
+  { codigo: "A.5", nombre: "Políticas de Seguridad", desc: "Política firmada por gerencia." },
+  { codigo: "A.6", nombre: "Organización", desc: "Roles y responsabilidades definidos." },
+  { codigo: "A.7", nombre: "RRHH", desc: "Contratación segura y capacitación." },
+  { codigo: "A.8", nombre: "Gestión de Activos", desc: "Inventario actualizado." },
+  { codigo: "A.9", nombre: "Control de Acceso", desc: "Mínimo privilegio." },
+  { codigo: "A.10", nombre: "Criptografía", desc: "AES-256 y TLS 1.3." },
+  { codigo: "A.11", nombre: "Seguridad Física", desc: "Perímetro controlado." },
+  { codigo: "A.12", nombre: "Seguridad Operacional", desc: "Backups y monitoreo." },
+  { codigo: "A.13", nombre: "Comunicaciones", desc: "Segmentación y VPN." },
+  { codigo: "A.14", nombre: "Adquisición", desc: "Requerimientos a proveedores." },
+  { codigo: "A.15", nombre: "Proveedores", desc: "Evaluación y SLA." },
+  { codigo: "A.16", nombre: "Incidentes", desc: "Plan de respuesta." },
+  { codigo: "A.17", nombre: "Continuidad", desc: "BCP y DRP." },
+  { codigo: "A.18", nombre: "Cumplimiento", desc: "Auditorías internas." },
+];

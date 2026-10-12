@@ -1,0 +1,80 @@
+
+/* Navegación principal */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Enlaces */
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+/* Hover */
+.nav a:hover {
+  color: var(--text-h);
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+/* Accesibilidad con teclado */
+.nav a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Adaptación a móviles */
+@media (max-width: 640px) {
+  .nav {
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .nav a {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .nav a {
+    transition: none;
+  }
+}

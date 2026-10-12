@@ -1,0 +1,511 @@
+
+.seccion-riesgos {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  text-align: left;
+  scroll-margin-top: 85px;
+}
+
+.riesgos-header {
+  margin-bottom: 30px;
+}
+
+.riesgos-etiqueta {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.riesgos-header h2 {
+  margin: 0 0 10px;
+}
+
+.riesgos-header > p {
+  max-width: 760px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.riesgos-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.seccion-riesgos .riesgo-kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.riesgo-kpi-titulo {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.riesgo-kpi-numero {
+  color: var(--text-h);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.riesgo-kpi-detalle {
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.nivel-critico {
+  color: var(--risk-critical);
+}
+
+.nivel-alto {
+  color: var(--risk-high);
+}
+
+.nivel-medio {
+  color: var(--risk-medium);
+}
+
+.riesgos-bloque {
+  margin-top: 36px;
+}
+
+.riesgos-subheader {
+  margin-bottom: 18px;
+}
+
+.riesgos-subheader h3 {
+  margin: 0 0 6px;
+  color: var(--text-h);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.riesgos-subheader p {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.riesgos-filtros {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(170px, 1fr) minmax(220px, 1.5fr) auto;
+  align-items: end;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--code-bg);
+}
+
+.riesgos-filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.riesgos-filtros label > span {
+  color: var(--text-h);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.riesgos-filtros select,
+.riesgos-filtros input {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: 14px/1.4 var(--sans);
+}
+
+.riesgos-filtros select:focus-visible,
+.riesgos-filtros input:focus-visible,
+.riesgos-limpiar:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.riesgos-filtros input::placeholder {
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.riesgos-limpiar {
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: 600 13px/1.4 var(--sans);
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+
+.riesgos-limpiar:hover {
+  background: var(--accent-border);
+}
+
+.riesgos-tabla-info {
+  display: flex;
+  justify-content: flex-end;
+  margin: 18px 0 10px;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.riesgos-tabla-info strong {
+  color: var(--text-h);
+}
+
+.riesgos-tabla-contenedor {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.riesgos-tabla {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.riesgos-tabla th,
+.riesgos-tabla td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.riesgos-tabla th {
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.riesgos-tabla td {
+  color: var(--text);
+}
+
+.riesgos-tabla tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.riesgos-tabla tbody tr:hover {
+  background: var(--accent-bg);
+}
+
+.riesgos-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.riesgos-tabla .riesgo-id {
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.riesgo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.riesgo-bajo {
+  color: var(--risk-low);
+  background: var(--risk-low-bg);
+  border-color: var(--risk-low);
+}
+
+.riesgo-medio {
+  color: var(--risk-medium);
+  background: var(--risk-medium-bg);
+  border-color: var(--risk-medium);
+}
+
+.riesgo-alto {
+  color: var(--risk-high);
+  background: var(--risk-high-bg);
+  border-color: var(--risk-high);
+}
+
+.riesgo-critico {
+  color: var(--risk-critical);
+  background: var(--risk-critical-bg);
+  border-color: var(--risk-critical);
+}
+
+.riesgos-vacio {
+  padding: 30px !important;
+  text-align: center;
+}
+
+.riesgos-matriz-contenedor {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.riesgos-matriz {
+  display: grid;
+  grid-template-columns: 54px repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.matriz-celda {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 56px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.matriz-encabezado {
+  border-color: transparent;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-size: 12px;
+}
+
+.matriz-bajo {
+  background: var(--risk-low-bg);
+  color: var(--risk-low);
+  border-color: var(--risk-low);
+}
+
+.matriz-medio {
+  background: var(--risk-medium-bg);
+  color: var(--risk-medium);
+  border-color: var(--risk-medium);
+}
+
+.matriz-alto {
+  background: var(--risk-high-bg);
+  color: var(--risk-high);
+  border-color: var(--risk-high);
+}
+
+.matriz-critico {
+  background: var(--risk-critical-bg);
+  color: var(--risk-critical);
+  border-color: var(--risk-critical);
+}
+
+.matriz-leyenda {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.matriz-leyenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.matriz-punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.matriz-punto-bajo {
+  background: var(--risk-low);
+}
+
+.matriz-punto-medio {
+  background: var(--risk-medium);
+}
+
+.matriz-punto-alto {
+  background: var(--risk-high);
+}
+
+.matriz-punto-critico {
+  background: var(--risk-critical);
+}
+
+.matriz-nota {
+  margin-top: 18px;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.riesgos-graficos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.seccion-riesgos .riesgo-grafico-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.riesgo-grafico-card h4 {
+  margin: 0 0 20px;
+  color: var(--text-h);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.riesgo-grafico {
+  position: relative;
+  width: 100%;
+  height: 280px;
+}
+
+.riesgo-grafico-dona {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1050px) {
+  .riesgos-filtros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .riesgos-filtros .riesgos-busqueda {
+    grid-column: span 1;
+  }
+
+  .riesgos-limpiar {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 800px) {
+  .riesgos-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .riesgos-graficos {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .seccion-riesgos {
+    padding: 24px 16px;
+  }
+
+  .seccion-riesgos .riesgo-kpi,
+  .seccion-riesgos .riesgo-grafico-card {
+    padding: 16px;
+  }
+
+  .riesgos-kpi-grid {
+    gap: 10px;
+  }
+
+  .riesgo-kpi-numero {
+    font-size: 27px;
+  }
+
+  .riesgos-filtros {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .riesgos-filtros .riesgos-busqueda {
+    grid-column: auto;
+  }
+
+  .riesgos-limpiar {
+    width: 100%;
+  }
+
+  .riesgos-matriz-contenedor {
+    padding: 12px;
+    overflow-x: auto;
+  }
+
+  .riesgos-matriz {
+    grid-template-columns: 38px repeat(5, minmax(38px, 1fr));
+    gap: 4px;
+    min-width: 260px;
+  }
+
+  .matriz-celda {
+    min-height: 42px;
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  .matriz-encabezado {
+    font-size: 10px;
+  }
+
+  .matriz-leyenda {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .riesgo-grafico {
+    height: 250px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .riesgos-limpiar,
+  .riesgos-tabla tbody tr {
+    transition: none;
+  }
+}
