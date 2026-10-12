@@ -1,252 +1,778 @@
 
-/* Contenedor de la sección */
+/* ========================================
+   SECCIÓN EMPRESA
+======================================== */
+
 .seccion-empresa {
-  width: 100%;
   padding: 32px;
-  box-sizing: border-box;
-  text-align: left;
   scroll-margin-top: 85px;
+  color: var(--text);
 }
 
-/* Encabezado */
+.seccion-empresa h2,
+.seccion-empresa h3,
+.seccion-empresa h4 {
+  color: var(--text-h);
+}
+
+.seccion-empresa p {
+  line-height: 1.65;
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
 .empresa-header {
   margin-bottom: 28px;
+  text-align: left;
 }
 
 .empresa-etiqueta {
   display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: var(--accent);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 1.2px;
 }
 
 .empresa-header h2 {
-  margin-bottom: 10px;
+  margin: 0 0 12px;
 }
 
 .empresa-header > p {
-  max-width: 680px;
+  max-width: 760px;
+  margin: 0;
   color: var(--text);
-  font-size: 15px;
 }
 
-/* Distribución de perfil y procesos */
+/* ========================================
+   DISTRIBUCIÓN GENERAL
+======================================== */
+
 .empresa-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  align-items: start;
   gap: 20px;
-  align-items: stretch;
 }
 
-/* Tarjetas */
-.seccion-empresa .card {
+.empresa-perfil,
+.empresa-procesos {
   min-width: 0;
   padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg);
-  box-shadow: var(--shadow);
   box-sizing: border-box;
 }
 
-.empresa-card-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 22px;
+.empresa-perfil {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  padding: 26px;
+  margin-bottom: 34px;
+  text-align: left;
+  box-sizing: border-box;
 }
 
-.empresa-card-title h3 {
-  margin: 0;
-  color: var(--text-h);
-  font-size: 17px;
-  font-weight: 600;
+.empresa-perfil-principal {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
 }
 
 .empresa-icono {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  display: flex;
+  flex: 0 0 58px;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  margin: 0;
+  border: 1px solid var(--accent-border);
+  border-radius: 16px;
   background: var(--accent-bg);
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 1.5rem;
 }
 
-/* Datos empresariales */
+.empresa-identidad {
+  flex: 1;
+  min-width: 0;
+}
+
+.empresa-identidad .empresa-etiqueta {
+  margin-bottom: 5px;
+}
+
 .empresa-nombre {
-  margin: 0 0 18px;
+  margin: 0 0 5px;
   color: var(--text-h);
-  font-size: 20px;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
+  font-size: 1.45rem;
+  line-height: 1.3;
 }
 
-.empresa-perfil > p {
-  margin-bottom: 12px;
+.empresa-identidad p {
+  margin: 0;
   color: var(--text);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.empresa-personal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.empresa-personal strong {
+  color: var(--text-h);
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.empresa-personal span {
+  color: var(--text);
+  font-size: 0.75rem;
+}
+
+.empresa-descripcion {
+  max-width: 1000px;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+/* ========================================
+   INFORMACIÓN DE LA EMPRESA
+======================================== */
+
+.empresa-datos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.empresa-datos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.empresa-dato > span {
+  color: var(--text);
+  font-size: 0.78rem;
+}
+
+.empresa-dato strong {
+  color: var(--text-h);
+  font-size: 0.88rem;
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.empresa-perfil strong {
-  color: var(--text-h);
-  font-weight: 600;
+
+.empresa-datos > div {
+  display: grid;
+  gap: 5px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
 }
 
-/* Misión */
+.empresa-datos dt,
+.empresa-activo-detalles dt {
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.empresa-datos dd,
+.empresa-activo-detalles dd {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
 .empresa-mision {
   margin-top: 22px;
-  padding: 16px;
+  padding: 16px 18px;
   border-left: 3px solid var(--accent);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 10px 10px 0;
   background: var(--accent-bg);
 }
 
 .empresa-mision h4 {
   margin: 0 0 8px;
   color: var(--text-h);
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
 .empresa-mision p {
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.7;
-  overflow-wrap: anywhere;
-}
-
-/* Lista de procesos */
-.empresa-lista {
-  display: grid;
-  gap: 12px;
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.empresa-lista li {
-  position: relative;
-  padding: 12px 14px 12px 34px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
   color: var(--text);
-  font-size: 14px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
+  font-size: 0.88rem;
+  line-height: 1.7;
 }
 
-.empresa-lista li::before {
-  content: "";
-  position: absolute;
-  left: 14px;
-  top: 19px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-}
+/* ========================================
+   ENCABEZADOS Y CONTADORES
+======================================== */
 
-/* Activos tecnológicos */
-.empresa-activos {
-  margin-top: 36px;
-}
-
-.empresa-activos-header {
+.empresa-card-cabecera,
+.empresa-proceso-cabecera,
+.empresa-proceso-pie,
+.empresa-activos-header,
+.empresa-activo-cabecera {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+}
+
+.empresa-procesos {
+  min-width: 0;
+  margin-bottom: 36px;
+}
+
+.empresa-card-cabecera {
   margin-bottom: 18px;
 }
 
+.empresa-card-cabecera h3,
 .empresa-activos-header h3 {
-  margin: 0;
-  color: var(--text-h);
-  font-size: 20px;
-  font-weight: 600;
+  margin: 0 0 6px;
+  font-size: 1.1rem;
 }
 
+.empresa-card-cabecera p,
+.empresa-activos-header p {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.empresa-contador,
 .empresa-activos-total {
+  flex-shrink: 0;
   padding: 6px 10px;
   border: 1px solid var(--border);
-  border-radius: 20px;
-  color: var(--text);
-  font-size: 12px;
+  border-radius: 999px;
+  color: var(--text-h);
+  font-size: 0.78rem;
   white-space: nowrap;
 }
 
-/* Cuadrícula adaptable de activos */
-.empresa-activos-grid {
+.empresa-procesos-encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.empresa-etiqueta {
+  display: block;
+  text-align: left;
+}
+
+.empresa-procesos-encabezado h3 {
+  margin: 0 0 8px;
+  color: var(--text-h);
+  font-size: 1.3rem;
+  text-align: left;
+}
+
+.empresa-procesos-encabezado p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.empresa-contador {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-h);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+/* ========================================
+   PROCESOS EMPRESARIALES
+======================================== */
+
+.empresa-procesos-lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.empresa-proceso {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-sizing: border-box;
+  text-align: left;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.empresa-proceso:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+}
+
+.empresa-proceso-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.empresa-proceso-id,
+.empresa-activo-id {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.empresa-proceso h4,
+.empresa-activo h4 {
+  margin: 0 0 10px;
+  color: var(--text-h);
+  font-size: 1rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.empresa-proceso > p,
+.empresa-activo > p {
+  margin: 0 0 22px;
+  color: var(--text);
+  font-size: 0.87rem;
+  line-height: 1.8;
+}
+
+.empresa-proceso-pie {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.76rem;
+}
+
+.empresa-proceso-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.empresa-proceso-meta > span {
+  align-self: flex-start;
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: var(--code-bg);
+  color: var(--text);
+  font-size: 0.75rem;
+}
+
+.empresa-proceso-meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.empresa-proceso-meta > div > span {
+  color: var(--text);
+  font-size: 0.75rem;
+}
+
+.empresa-proceso-meta strong {
+  color: var(--text-h);
+  font-size: 0.84rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   ETIQUETAS DE CRITICIDAD
+======================================== */
+
+.empresa-criticidad {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.empresa-criticidad-critica {
+  color: var(--risk-critical, var(--accent));
+  background: var(--risk-critical-bg, var(--accent-bg));
+}
+
+.empresa-criticidad-alta {
+  color: var(--risk-high, var(--accent));
+  background: var(--risk-high-bg, var(--accent-bg));
+}
+
+.empresa-criticidad-media {
+  color: var(--risk-medium, var(--text-h));
+  background: var(--risk-medium-bg, var(--code-bg));
+}
+
+/* ========================================
+   INVENTARIO DE ACTIVOS
+======================================== */
+
+.empresa-activos {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.empresa-activos-header {
+  align-items: flex-end;
+  margin-bottom: 22px;
+}
+
+.empresa-activos-header h3 {
+  font-size: 1.35rem;
+}
+
+.empresa-activos-header > div {
+  min-width: 0;
+}
+
+/* Resumen de criticidad */
+
+.empresa-resumen-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
+  margin-bottom: 26px;
 }
 
-.seccion-empresa .empresa-activo {
+.empresa-resumen-card {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
   padding: 18px;
-  min-height: 76px;
-  box-shadow: none;
-  font-size: 14px;
-  font-weight: 500;
-  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+
+.empresa-resumen-card span {
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.empresa-resumen-card strong {
+  color: var(--text-h);
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+/* ========================================
+   FILTROS Y BÚSQUEDA
+======================================== */
+
+.empresa-filtros {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.empresa-busqueda,
+.empresa-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.empresa-filtros label {
+  color: var(--text-h);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.empresa-filtros input,
+.empresa-filtros select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.83rem;
+}
+
+.empresa-filtros input:focus-visible,
+.empresa-filtros select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.empresa-resultados {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+/* ========================================
+   TARJETAS DE ACTIVOS
+   DOS COLUMNAS EN ESCRITORIO
+======================================== */
+
+.empresa-activos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.empresa-activo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px;
+  box-sizing: border-box;
+  text-align: left;
   transition:
     border-color 180ms ease,
-    box-shadow 180ms ease;
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 .empresa-activo:hover {
   border-color: var(--accent-border);
   box-shadow: var(--shadow);
+  transform: translateY(-2px);
 }
 
-.empresa-activo-indicador {
-  flex-shrink: 0;
-  width: 9px;
-  height: 9px;
-  border-radius: 3px;
-  background: var(--accent);
+.empresa-activo-cabecera {
+  margin-bottom: 16px;
 }
 
-/* Tabletas */
+.empresa-activo h4 {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.empresa-activo > p {
+  margin-bottom: 18px;
+}
+
+.empresa-activo-detalles {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.empresa-activo-detalles > div {
+  display: grid;
+  gap: 5px;
+}
+
+.empresa-activo-procesos {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   ESTADO SIN RESULTADOS
+======================================== */
+
+.empresa-vacio {
+  padding: 36px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.empresa-vacio h4 {
+  margin: 0 0 8px;
+}
+
+.empresa-vacio p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.empresa-vacio button {
+  padding: 10px 16px;
+  border: 1px solid var(--accent-border);
+  border-radius: 9px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.empresa-vacio button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   DISEÑO RESPONSIVE
+======================================== */
+
 @media (max-width: 900px) {
-  .empresa-grid {
-    grid-template-columns: 1fr;
+  .empresa-procesos-lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .empresa-activos-grid {
+  .empresa-datos-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .empresa-perfil-principal {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .empresa-identidad {
+    flex-basis: calc(100% - 80px);
+  }
+
+  .empresa-personal {
+    flex-direction: row;
+    margin-left: 76px;
+  }
+
+  .empresa-datos-grid,
+  .empresa-procesos-lista {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .empresa-procesos-encabezado {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .empresa-proceso {
+    padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empresa-proceso {
+    transition: none;
+  }
+}
+
+/* Tabletas y pantallas medianas */
+@media (max-width: 900px) {
+  .empresa-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .empresa-resumen-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .empresa-filtros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .empresa-busqueda {
+    grid-column: 1 / -1;
   }
 }
 
 /* Móviles */
 @media (max-width: 600px) {
   .seccion-empresa {
-    padding: 24px 16px;
+    padding: 20px 16px;
   }
 
-  .seccion-empresa .card {
+  .empresa-perfil,
+  .empresa-procesos {
     padding: 18px;
   }
 
-  .empresa-activos-grid {
-    grid-template-columns: 1fr;
+  .empresa-activos-grid,
+  .empresa-resumen-grid,
+  .empresa-filtros {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .empresa-activos-header {
+  .empresa-busqueda {
+    grid-column: auto;
+  }
+
+  .empresa-activos-header,
+  .empresa-card-cabecera {
     align-items: flex-start;
+    flex-direction: column;
   }
 
-  .empresa-nombre {
-    font-size: 18px;
+  .empresa-activo {
+    padding: 18px;
+  }
+
+  .empresa-activo-procesos {
+    margin-top: 8px;
+  }
+
+  .empresa-contador,
+  .empresa-activos-total {
+    align-self: flex-start;
   }
 }
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .empresa-activo {
+    transition: none;
+  }
+
+  .empresa-activo:hover {
+    transform: none;
+  }
+}
+

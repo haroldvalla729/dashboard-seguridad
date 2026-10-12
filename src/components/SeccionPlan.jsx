@@ -23,7 +23,7 @@ export default function SeccionPlan() {
     <section id="plan" className="seccion-plan">
       <header className="plan-header">
         <span className="plan-etiqueta">
-          TRATAMIENTO Y MITIGACIÓN
+          05 · TRATAMIENTO Y MITIGACIÓN
         </span>
 
         <h2>Plan de Acción</h2>

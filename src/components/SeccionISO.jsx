@@ -7,7 +7,7 @@ export default function SeccionISO() {
     <section id="iso" className="seccion-iso">
       <header className="iso-header">
         <span className="iso-etiqueta">
-          MARCO DE SEGURIDAD
+          03 · MARCO DE SEGURIDAD
         </span>
 
         <h2>ISO 27001 – Controles Aplicados</h2>

@@ -160,7 +160,7 @@ export default function SeccionRiesgos() {
     <section id="riesgos" className="seccion-riesgos">
       <header className="riesgos-header">
         <span className="riesgos-etiqueta">
-          EVALUACIÓN Y TRATAMIENTO
+          04 · EVALUACIÓN Y TRATAMIENTO
         </span>
 
         <h2>Gestión de Riesgos</h2>

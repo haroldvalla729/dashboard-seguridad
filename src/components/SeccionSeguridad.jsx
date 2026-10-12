@@ -13,7 +13,7 @@ export default function SeccionSeguridad() {
     <section id="seguridad" className="seccion-seguridad">
       <header className="seguridad-header">
         <span className="seguridad-etiqueta">
-          PROTECCIÓN DE LA INFORMACIÓN
+          02 · PROTECCIÓN DE LA INFORMACIÓN
         </span>
 
         <h2>Seguridad de la Información</h2>
