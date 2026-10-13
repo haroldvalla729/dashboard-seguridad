@@ -1,261 +1,268 @@
 export const empresa = {
   "seccion": "contexto_empresarial",
-  "version": "1.1",
+  "version": "2.0",
   "empresa": {
-    "nombre": "TecnoAndes S.A.",
-    "actividad": "Desarrollo de software y servicios en la nube",
-    "sector": "Tecnología de la información",
-    "ubicacion": "Quito, Ecuador",
-    "sede": "Quito, Ecuador",
-    "numero_empleados": 45,
-    "mision": "Proveer soluciones tecnológicas seguras y confiables.",
-    "descripcion_tecnologica": "La empresa desarrolla software a medida y ofrece hosting y administración de servidores, bases de datos, soporte técnico y facturación electrónica a sus clientes, operando sobre infraestructura en la nube y servidores propios."
+    "nombre": "CODEXA Soluciones Tecnológicas S.A.S.",
+    "tipo_empresa": "Empresa de tecnología: desarrollo, comercialización y operación de software financiero en modalidad SaaS",
+    "tamano": "Mediana empresa",
+    "actividad": "Desarrollo y operación de un sistema de gestión financiera SaaS para cooperativas de ahorro y crédito de los segmentos 3 a 5, con soporte técnico remoto y servicios de integración",
+    "ubicacion": "Milagro, provincia del Guayas, Ecuador (sede administrativa y de desarrollo); infraestructura productiva en proveedor de nube pública (IaaS)",
+    "numero_empleados": 48,
+    "areas": [
+      {
+        "area": "Desarrollo",
+        "colaboradores": 22
+      },
+      {
+        "area": "Infraestructura y Soporte",
+        "colaboradores": 14
+      },
+      {
+        "area": "Comercial",
+        "colaboradores": 7
+      },
+      {
+        "area": "Administración",
+        "colaboradores": 5
+      }
+    ],
+    "alcance": {
+      "cooperativas_activas": 31,
+      "socios_finales_aprox": 140000,
+      "modelo_datos": "Base multiempresa (multi-tenant)"
+    },
+    "servicios": [
+      "Plataforma SaaS de gestión financiera",
+      "Soporte técnico remoto",
+      "Servicios de integración con los sistemas de los clientes"
+    ],
+    "informacion_que_gestiona": [
+      "Datos personales de los socios (cédula, nombres, dirección, teléfono, actividad económica)",
+      "Datos financieros (saldos, movimientos, garantías y calificación crediticia)",
+      "Código fuente propietario y credenciales de despliegue de la plataforma",
+      "Contratos, acuerdos de nivel de servicio (SLA) y documentación contable",
+      "Expedientes laborales del personal"
+    ],
+    "sistemas_y_servicios_tecnologicos": [
+      "Base de datos transaccional de producción (PostgreSQL, multiempresa)",
+      "Repositorio de código fuente (GitLab autoalojado)",
+      "Servidores de aplicación en la nube (3 instancias productivas, IaaS)",
+      "Correo institucional y plataforma de colaboración documental en la nube",
+      "Equipos portátiles de desarrollo y soporte (36 unidades)"
+    ],
+    "marco_normativo": {
+      "obligatorio": [
+        "Ley Orgánica de Protección de Datos Personales y su Reglamento General",
+        "Exigencias contractuales de clientes supervisados"
+      ],
+      "voluntario": [
+        "ISO/IEC 27001:2022",
+        "ISO/IEC 27002:2022",
+        "ISO 22301:2019"
+      ]
+    },
+    "motivacion_sgsi": "Dos clientes exigen la certificación ISO/IEC 27001 como requisito de renovación contractual; la empresa aún no tiene inventario formal de activos ni política de seguridad aprobada."
   },
   "procesos": [
     {
-      "id": "P01",
-      "nombre": "Desarrollo de software a medida",
+      "id": "P-01",
+      "nombre": "Desarrollo del producto SaaS",
       "tipo": "Misional",
-      "descripcion": "Análisis, diseño, programación y pruebas de aplicaciones para clientes.",
-      "responsable": "Jefe de Desarrollo",
-      "criticidad": "Alta"
+      "descripcion": "Diseño, programación, pruebas y despliegue de la plataforma financiera.",
+      "responsable": "Líder de Desarrollo",
+      "criticidad": "Alta",
+      "tiempo_max_interrupcion_horas": null
     },
     {
-      "id": "P02",
-      "nombre": "Hosting y administración de servidores",
+      "id": "P-02",
+      "nombre": "Plataforma SaaS (operación y hosting)",
       "tipo": "Misional",
-      "descripcion": "Alojamiento y operación de los servidores y aplicaciones de los clientes.",
+      "descripcion": "Operación de la plataforma en la nube que atiende a las 31 cooperativas.",
       "responsable": "Jefe de Infraestructura",
-      "criticidad": "Crítica"
+      "criticidad": "Crítica",
+      "tiempo_max_interrupcion_horas": 4
     },
     {
-      "id": "P03",
-      "nombre": "Soporte técnico a clientes",
+      "id": "P-03",
+      "nombre": "Gestión de base de datos transaccional",
       "tipo": "Misional",
-      "descripcion": "Atención de incidentes y requerimientos de los clientes.",
-      "responsable": "Líder de Soporte",
-      "criticidad": "Media"
+      "descripcion": "Administración y respaldo de la base multiempresa con datos personales y financieros.",
+      "responsable": "Jefe de Infraestructura",
+      "criticidad": "Crítica",
+      "tiempo_max_interrupcion_horas": 4
     },
     {
-      "id": "P04",
-      "nombre": "Gestión de bases de datos",
+      "id": "P-04",
+      "nombre": "Atención a cooperativas (soporte técnico)",
       "tipo": "Misional",
-      "descripcion": "Administración, respaldo y optimización de bases de datos propias y de clientes.",
-      "responsable": "Administrador de BD",
-      "criticidad": "Crítica"
+      "descripcion": "Soporte técnico remoto a las cooperativas clientes.",
+      "responsable": "Infraestructura y Soporte",
+      "criticidad": "Alta",
+      "tiempo_max_interrupcion_horas": 8
     },
     {
-      "id": "P05",
-      "nombre": "Facturación electrónica",
+      "id": "P-05",
+      "nombre": "Servicios de integración",
       "tipo": "Misional",
-      "descripcion": "Emisión y envío de comprobantes electrónicos autorizados por el SRI.",
-      "responsable": "Líder de Facturación",
-      "criticidad": "Alta"
+      "descripcion": "Integración de la plataforma con los sistemas de los clientes.",
+      "responsable": "Infraestructura y Soporte",
+      "criticidad": "Media",
+      "tiempo_max_interrupcion_horas": 8
+    },
+    {
+      "id": "P-06",
+      "nombre": "Gestión comercial",
+      "tipo": "Apoyo",
+      "descripcion": "Propuestas, contratos e historial de servicios con clientes.",
+      "responsable": "Área Comercial",
+      "criticidad": "Media",
+      "tiempo_max_interrupcion_horas": null
+    },
+    {
+      "id": "P-07",
+      "nombre": "Administración y talento humano",
+      "tipo": "Apoyo",
+      "descripcion": "Información financiera interna, contratos y expedientes laborales.",
+      "responsable": "Área Administrativa",
+      "criticidad": "Media",
+      "tiempo_max_interrupcion_horas": null
     }
   ],
   "activos": [
     {
-      "id": "A01",
-      "nombre": "Código fuente y repositorios (Git)",
-      "tipo": "Información",
-      "descripcion": "Código de los productos propios y de los proyectos de clientes.",
-      "ubicacion": "Repositorio en la nube",
-      "propietario": "Jefe de Desarrollo",
-      "criticidad": "Crítica",
-      "procesos_relacionados": [
-        "P01"
-      ]
-    },
-    {
-      "id": "A02",
-      "nombre": "Bases de datos de clientes",
-      "tipo": "Información",
-      "descripcion": "Datos de negocio y datos personales de clientes y sus usuarios finales.",
-      "ubicacion": "Servidores de BD",
-      "propietario": "Administrador de BD",
-      "criticidad": "Crítica",
-      "procesos_relacionados": [
-        "P02",
-        "P04",
-        "P05"
-      ]
-    },
-    {
-      "id": "A03",
-      "nombre": "Servidores de producción (hosting)",
-      "tipo": "Hardware",
-      "descripcion": "Servidores físicos y virtuales que alojan las aplicaciones de los clientes.",
-      "ubicacion": "Centro de datos / nube",
+      "id": "A-01",
+      "nombre": "Base de datos transaccional de producción (PostgreSQL, multiempresa)",
+      "tipo": "Información / datos",
+      "descripcion": "Datos personales y financieros de ~140.000 socios de 31 cooperativas.",
+      "ubicacion": "Servidores productivos en nube",
       "propietario": "Jefe de Infraestructura",
-      "criticidad": "Crítica",
+      "importancia": "Alta",
+      "origen": "Guía S4",
+      "riesgo_asociado": "R-01",
+      "nivel_riesgo_guia": "Crítico",
+      "que_podria_ocurrir": "Robo o exfiltración por acceso no autorizado: cuentas administrativas con contraseñas débiles y reutilizadas, sin MFA ni revisión periódica de privilegios.",
       "procesos_relacionados": [
-        "P02",
-        "P04"
+        "P-02",
+        "P-03"
       ]
     },
     {
-      "id": "A04",
-      "nombre": "Plataforma de facturación electrónica",
-      "tipo": "Software",
-      "descripcion": "Sistema que genera, firma y envía comprobantes electrónicos al SRI.",
-      "ubicacion": "Servidor de aplicaciones",
-      "propietario": "Líder de Facturación",
-      "criticidad": "Crítica",
+      "id": "A-02",
+      "nombre": "Repositorio de código fuente (GitLab autoalojado)",
+      "tipo": "Propiedad intelectual",
+      "descripcion": "Código propietario del producto y secretos de despliegue.",
+      "ubicacion": "GitLab autoalojado",
+      "propietario": "Líder de Desarrollo",
+      "importancia": "Alta",
+      "origen": "Guía S4",
+      "riesgo_asociado": "R-04",
+      "nivel_riesgo_guia": "Alto",
+      "que_podria_ocurrir": "Fuga de código y secretos por credenciales incrustadas y accesos que no se revocan al desvincular colaboradores.",
       "procesos_relacionados": [
-        "P05"
+        "P-01"
       ]
     },
     {
-      "id": "A05",
-      "nombre": "Firmas electrónicas y certificados digitales",
-      "tipo": "Información",
-      "descripcion": "Certificados y claves usados para firmar comprobantes y cifrar comunicaciones.",
-      "ubicacion": "Módulo seguro / servidor",
-      "propietario": "Líder de Facturación",
-      "criticidad": "Crítica",
+      "id": "A-03",
+      "nombre": "Servidores de aplicación en la nube (3 instancias productivas, IaaS)",
+      "tipo": "Servicio / hardware virtual",
+      "descripcion": "Instancias que ejecutan la plataforma SaaS; su caída afecta a las 31 cooperativas.",
+      "ubicacion": "Proveedor de nube pública",
+      "propietario": "Jefe de Infraestructura",
+      "importancia": "Alta",
+      "origen": "Guía S4",
+      "riesgo_asociado": "R-03",
+      "nivel_riesgo_guia": "Crítico",
+      "que_podria_ocurrir": "Ransomware o interrupción del servicio por actualizaciones sin calendario y sin pruebas de restauración de respaldos.",
       "procesos_relacionados": [
-        "P05",
-        "P02"
+        "P-02",
+        "P-04",
+        "P-05"
       ]
     },
     {
-      "id": "A06",
-      "nombre": "Infraestructura en la nube",
+      "id": "A-04",
+      "nombre": "Correo institucional y plataforma de colaboración documental",
       "tipo": "Servicio en la nube",
-      "descripcion": "Servicios cloud contratados para hosting, almacenamiento y desarrollo.",
-      "ubicacion": "Proveedor cloud",
-      "propietario": "Jefe de Infraestructura",
-      "criticidad": "Alta",
-      "procesos_relacionados": [
-        "P01",
-        "P02"
-      ]
-    },
-    {
-      "id": "A07",
-      "nombre": "Respaldos (backups)",
-      "tipo": "Información",
-      "descripcion": "Copias de seguridad de bases de datos, servidores y código.",
-      "ubicacion": "Almacenamiento local y nube",
-      "propietario": "Administrador de BD",
-      "criticidad": "Alta",
-      "procesos_relacionados": [
-        "P02",
-        "P04"
-      ]
-    },
-    {
-      "id": "A08",
-      "nombre": "Red corporativa, firewall y VPN",
-      "tipo": "Infraestructura de red",
-      "descripcion": "Equipos de red y accesos remotos seguros para el personal.",
-      "ubicacion": "Oficinas Quito",
-      "propietario": "Jefe de Infraestructura",
-      "criticidad": "Alta",
-      "procesos_relacionados": [
-        "P01",
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ]
-    },
-    {
-      "id": "A09",
-      "nombre": "Sistema de tickets y soporte",
-      "tipo": "Software",
-      "descripcion": "Plataforma de registro y seguimiento de incidentes de clientes.",
-      "ubicacion": "Servidor de aplicaciones",
-      "propietario": "Líder de Soporte",
-      "criticidad": "Media",
-      "procesos_relacionados": [
-        "P03"
-      ]
-    },
-    {
-      "id": "A10",
-      "nombre": "Equipos de desarrollo (laptops y estaciones)",
-      "tipo": "Hardware",
-      "descripcion": "Equipos del personal técnico con acceso a código y a entornos de clientes.",
-      "ubicacion": "Oficinas Quito",
-      "propietario": "Jefe de Desarrollo",
-      "criticidad": "Media",
-      "procesos_relacionados": [
-        "P01",
-        "P03"
-      ]
-    },
-    {
-      "id": "A11",
-      "nombre": "Credenciales y cuentas privilegiadas",
-      "tipo": "Información",
-      "descripcion": "Usuarios administradores, claves de acceso y llaves de servidores y bases de datos.",
-      "ubicacion": "Gestor de contraseñas",
-      "propietario": "Jefe de Infraestructura",
-      "criticidad": "Crítica",
-      "procesos_relacionados": [
-        "P01",
-        "P02",
-        "P04"
-      ]
-    },
-    {
-      "id": "A12",
-      "nombre": "Personal técnico (desarrolladores y administradores)",
-      "tipo": "Personas",
-      "descripcion": "Empleados con conocimiento y acceso privilegiado a sistemas e información.",
-      "ubicacion": "Oficinas Quito",
-      "propietario": "Gerencia",
-      "criticidad": "Alta",
-      "procesos_relacionados": [
-        "P01",
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ]
-    },
-    {
-      "id": "A13",
-      "nombre": "Correo y herramientas de colaboración",
-      "tipo": "Servicio en la nube",
-      "descripcion": "Correo corporativo y mensajería para comunicación interna y con clientes.",
+      "descripcion": "Correo y documentos compartidos de los 48 colaboradores.",
       "ubicacion": "Nube",
-      "propietario": "Jefe de Infraestructura",
-      "criticidad": "Media",
+      "propietario": "Coordinador de TI",
+      "importancia": "Alta",
+      "origen": "Guía S4",
+      "riesgo_asociado": "R-02",
+      "nivel_riesgo_guia": "Crítico",
+      "que_podria_ocurrir": "Phishing e ingeniería social por falta de concienciación y de registros SPF, DKIM y DMARC bien configurados.",
       "procesos_relacionados": [
-        "P01",
-        "P03"
+        "P-01",
+        "P-04",
+        "P-06",
+        "P-07"
       ]
     },
     {
-      "id": "A14",
-      "nombre": "Seguridad física del centro de datos y oficinas",
-      "tipo": "Seguridad física",
-      "descripcion": "Control de acceso, cámaras, UPS y climatización de salas de servidores.",
-      "ubicacion": "Oficinas Quito",
-      "propietario": "Jefe de Infraestructura",
-      "criticidad": "Alta",
+      "id": "A-05",
+      "nombre": "Equipos portátiles de desarrollo y soporte (36 unidades)",
+      "tipo": "Hardware / endpoint",
+      "descripcion": "Portátiles con código, credenciales y datos de trabajo.",
+      "ubicacion": "Oficinas Milagro y uso externo",
+      "propietario": "Coordinador de TI",
+      "importancia": "Media",
+      "origen": "Guía S4",
+      "riesgo_asociado": "R-05",
+      "nivel_riesgo_guia": "Moderado",
+      "que_podria_ocurrir": "Pérdida o robo con información sensible: discos sin cifrado, archivos solo en local y traslado frecuente fuera de la oficina.",
       "procesos_relacionados": [
-        "P02"
+        "P-01",
+        "P-04"
+      ]
+    },
+    {
+      "id": "A-06",
+      "nombre": "Contratos, SLA y documentación contable",
+      "tipo": "Información",
+      "descripcion": "Contratos con cooperativas, acuerdos de nivel de servicio y registros contables.",
+      "ubicacion": "Archivo digital y físico",
+      "propietario": "Administración (por designar)",
+      "importancia": "Media",
+      "origen": "Complementario",
+      "riesgo_asociado": null,
+      "nivel_riesgo_guia": null,
+      "que_podria_ocurrir": "Activo mencionado en la información que gestiona la empresa; no tiene riesgo asignado en la Guía S4.",
+      "procesos_relacionados": [
+        "P-06",
+        "P-07"
+      ]
+    },
+    {
+      "id": "A-07",
+      "nombre": "Expedientes laborales del personal",
+      "tipo": "Información",
+      "descripcion": "Datos personales y laborales de los 48 colaboradores.",
+      "ubicacion": "Archivo de Administración",
+      "propietario": "Administración (por designar)",
+      "importancia": "Media",
+      "origen": "Complementario",
+      "riesgo_asociado": null,
+      "nivel_riesgo_guia": null,
+      "que_podria_ocurrir": "Activo mencionado en la información que gestiona la empresa; no tiene riesgo asignado en la Guía S4.",
+      "procesos_relacionados": [
+        "P-07"
       ]
     }
   ],
   "resumen_activos": {
-    "total": 14,
-    "por_tipo": {
-      "Información": 5,
-      "Hardware": 2,
-      "Software": 2,
-      "Servicio en la nube": 2,
-      "Infraestructura de red": 1,
-      "Personas": 1,
-      "Seguridad física": 1
-    },
-    "por_criticidad": {
-      "Crítica": 6,
-      "Alta": 5,
+    "total": 7,
+    "por_importancia": {
+      "Alta": 4,
       "Media": 3
+    },
+    "por_tipo": {
+      "Información / datos": 1,
+      "Propiedad intelectual": 1,
+      "Servicio / hardware virtual": 1,
+      "Servicio en la nube": 1,
+      "Hardware / endpoint": 1,
+      "Información": 2
     }
   }
 };

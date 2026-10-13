@@ -1,21 +1,114 @@
-// 🔥 ESTE ES EL ARCHIVO MÁS IMPORTANTE
-// Agregar/quitar riesgos solo modificando este array
 export const riesgos = [
-  { id:"R01", activo:"Servidores de Producción", amenaza:"Ataque DDoS", vuln:"Sin anti-DDoS", prob:4, imp:5, control:"A.13", accion:"Contratar Anti-DDoS", prioridad:"Alta" },
-  { id:"R02", activo:"Base de Datos Clientes", amenaza:"Fuga de información", vuln:"Datos sin cifrar", prob:3, imp:5, control:"A.10", accion:"Cifrado AES-256", prioridad:"Alta" },
-  { id:"R03", activo:"Plataforma Cloud", amenaza:"Acceso no autorizado", vuln:"Credenciales débiles", prob:4, imp:4, control:"A.9", accion:"Activar MFA", prioridad:"Alta" },
-  { id:"R04", activo:"Sitio Web", amenaza:"Inyección SQL", vuln:"Sin validación", prob:3, imp:4, control:"A.14", accion:"WAF + OWASP", prioridad:"Alta" },
-  { id:"R05", activo:"Correo Corporativo", amenaza:"Phishing", vuln:"Falta concientización", prob:5, imp:3, control:"A.7", accion:"Capacitación", prioridad:"Media" },
-  { id:"R06", activo:"Equipos de Desarrollo", amenaza:"Ransomware", vuln:"Antivirus desactualizado", prob:3, imp:5, control:"A.12", accion:"Desplegar EDR", prioridad:"Alta" },
-  { id:"R07", activo:"Credenciales", amenaza:"Robo de contraseñas", vuln:"Reutilización", prob:4, imp:4, control:"A.9", accion:"Gestor + MFA", prioridad:"Alta" },
-  { id:"R08", activo:"Dispositivos Móviles", amenaza:"Pérdida/robo", vuln:"Sin cifrado", prob:3, imp:3, control:"A.11", accion:"MDM + borrado remoto", prioridad:"Media" },
-  { id:"R09", activo:"Servidores", amenaza:"Corte eléctrico", vuln:"UPS vencida", prob:2, imp:4, control:"A.11", accion:"Renovar UPS", prioridad:"Media" },
-  { id:"R10", activo:"Backups", amenaza:"Pérdida de datos", vuln:"Backups no verificados", prob:3, imp:5, control:"A.12", accion:"Backup 3-2-1", prioridad:"Alta" },
-  { id:"R11", activo:"Red corporativa", amenaza:"Intrusión interna", vuln:"Red plana", prob:3, imp:4, control:"A.13", accion:"Segmentar VLANs", prioridad:"Media" },
-  { id:"R12", activo:"Proveedores Cloud", amenaza:"Incumplimiento", vuln:"Sin cláusulas", prob:2, imp:3, control:"A.15", accion:"Revisar contratos", prioridad:"Baja" },
+  {
+      "N°": "1",
+      "Riesgo": "Acceso no autorizado a información.",
+      "Descripción del riesgo": "Empleados o terceros acceden a datos sensibles sin autorización.",
+      "Consecuencia": "Pérdida de confidencialidad y filtración de datos de clientes.",
+      "Probabilidad": "Alta",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Crítico"
+  },
+  {
+      "N°": "2",
+      "Riesgo": "Ausencia de conciencia en seguridad.",
+      "Descripción del riesgo": "Personal sin formación comete errores operativos o cae en ataques de ingeniería social.",
+      "Consecuencia": "Vulnerabilidad de los activos por errores humanos accidentales.",
+      "Probabilidad": "Alta",
+      "Impacto": "Medio",
+      "Nivel de Riesgo": "Alto"
+  },
+  {
+      "N°": "3",
+      "Riesgo": "Robo de activos físicos o digitales.",
+      "Descripción del riesgo": "Equipos o soportes de almacenamiento con información crítica sin control de inventario.",
+      "Consecuencia": "Indisponibilidad o robo de propiedad intelectual y datos financieros.",
+      "Probabilidad": "Media",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Alto"
+  },
+  {
+      "N°": "4",
+      "Riesgo": "Fallos en la criptografía de datos.",
+      "Descripción del riesgo": "Datos sensibles almacenados o transmitidos sin cifrado adecuado.",
+      "Consecuencia": "Exposición de información confidencial ante interceptaciones.",
+      "Probabilidad": "Media",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Alto"
+  },
+  {
+      "N°": "5",
+      "Riesgo": "Daños físicos o ambientales.",
+      "Descripción del riesgo": "Incendios, inundaciones o accesos físicos no autorizados al centro de procesamiento.",
+      "Consecuencia": "Destrucción de instalaciones e interrupción total de los sistemas.",
+      "Probabilidad": "Baja",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Medio"
+  },
+  {
+      "N°": "6",
+      "Riesgo": "Vulnerabilidades en operaciones TIC.",
+      "Descripción del riesgo": "Falta de actualización de definiciones de virus o fallos en el monitoreo de registros.",
+      "Consecuencia": "Infección por malware o ejecución de operaciones incorrectas.",
+      "Probabilidad": "Alta",
+      "Impacto": "Medio",
+      "Nivel de Riesgo": "Alto"
+  },
+  {
+      "N°": "7",
+      "Riesgo": "Inseguridad en las redes de comunicación.",
+      "Descripción del riesgo": "Falta de protección en la transmisión de datos a través de redes públicas o internas.",
+      "Consecuencia": "Alteración de la información en tránsito.",
+      "Probabilidad": "Media",
+      "Impacto": "Medio",
+      "Nivel de Riesgo": "Medio"
+  },
+  {
+      "N°": "8",
+      "Riesgo": "Errores en desarrollo de sistemas.",
+      "Descripción del riesgo": "Defectos de codificación o fallas de seguridad integradas durante el ciclo de vida del software.",
+      "Consecuencia": "Compromiso de la integridad de los sistemas y brechas funcionales.",
+      "Probabilidad": "Media",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Alto"
+  },
+  {
+      "N°": "9",
+      "Riesgo": "Riesgos por terceros y proveedores.",
+      "Descripción del riesgo": "Proveedores externos con acceso a los sistemas de la empresa sin controles de seguridad estrictos.",
+      "Consecuencia": "Fugas de información y incumplimiento de acuerdos de nivel de servicio (SLA).",
+      "Probabilidad": "Alta",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Crítico"
+  },
+  {
+      "N°": "10",
+      "Riesgo": "Gestión deficiente de incidentes de seguridad.",
+      "Descripción del riesgo": "Falta de un enfoque coherente para reportar debilidades e infracciones de seguridad.",
+      "Consecuencia": "Retraso en la contención de amenazas, agravando el daño a la organización.",
+      "Probabilidad": "Media",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Alto"
+  },
+  {
+      "N°": "11",
+      "Riesgo": "Interrupción de la continuidad del negocio.",
+      "Descripción del riesgo": "Ausencia de planes para mantener los servicios de información ante desastres o crisis.",
+      "Consecuencia": "Incumplimiento de la continuidad operativa y parálisis comercial.",
+      "Probabilidad": "Baja",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Medio"
+  },
+  {
+      "N°": "12",
+      "Riesgo": "Incumplimiento legal y regulatorio.",
+      "Descripción del riesgo": "No acatar normativas vigentes o cláusulas contractuales de seguridad de datos.",
+      "Consecuencia": "Sanciones legales, multas económicas y daño a la reputación corporativa.",
+      "Probabilidad": "Media",
+      "Impacto": "Alto",
+      "Nivel de Riesgo": "Alto"
+  }
 ];
 
-// Función auxiliar (no tocar)
 export function calcularNivel(prob, imp) {
   const s = prob * imp;
   if (s >= 16) return "Crítico";
