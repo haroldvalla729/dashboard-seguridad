@@ -1,4 +1,6 @@
-
+/* ============================================================
+   Sección Riesgos — layout general
+   ============================================================ */
 .seccion-riesgos {
   width: 100%;
   padding: 32px;
@@ -7,30 +9,43 @@
   scroll-margin-top: 85px;
 }
 
+/* ============================================================
+   Header
+   ============================================================ */
 .riesgos-header {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 .riesgos-etiqueta {
   display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-bg);
   color: var(--accent);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
 }
 
 .riesgos-header h2 {
   margin: 0 0 10px;
+  font-size: 28px;
+  line-height: 1.2;
 }
 
 .riesgos-header > p {
   max-width: 760px;
+  margin: 0;
   color: var(--text);
   font-size: 15px;
   line-height: 1.7;
 }
 
+/* ============================================================
+   KPIs
+   ============================================================ */
 .riesgos-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -38,31 +53,70 @@
 }
 
 .seccion-riesgos .riesgo-kpi {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 8px;
   min-width: 0;
-  padding: 20px;
+  padding: 20px 20px 20px 24px;
   box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--bg);
   box-shadow: var(--shadow);
+  overflow: hidden;
 }
+
+.seccion-riesgos .riesgo-kpi::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--border);
+}
+
+.riesgo-kpi.kpi-critico::before { background: var(--risk-critical); }
+.riesgo-kpi.kpi-alto::before    { background: var(--risk-high); }
+.riesgo-kpi.kpi-medio::before   { background: var(--risk-medium); }
+.riesgo-kpi.kpi-total::before   { background: var(--accent); }
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kpi-punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.riesgo-kpi.kpi-critico .kpi-punto { background: var(--risk-critical); }
+.riesgo-kpi.kpi-alto .kpi-punto    { background: var(--risk-high); }
+.riesgo-kpi.kpi-medio .kpi-punto   { background: var(--risk-medium); }
+.riesgo-kpi.kpi-total .kpi-punto   { background: var(--accent); }
 
 .riesgo-kpi-titulo {
   color: var(--text);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
 }
 
 .riesgo-kpi-numero {
   color: var(--text-h);
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
 }
+
+.riesgo-kpi.kpi-critico .riesgo-kpi-numero { color: var(--risk-critical); }
+.riesgo-kpi.kpi-alto .riesgo-kpi-numero    { color: var(--risk-high); }
+.riesgo-kpi.kpi-medio .riesgo-kpi-numero   { color: var(--risk-medium); }
 
 .riesgo-kpi-detalle {
   color: var(--text);
@@ -70,20 +124,11 @@
   line-height: 1.5;
 }
 
-.nivel-critico {
-  color: var(--risk-critical);
-}
-
-.nivel-alto {
-  color: var(--risk-high);
-}
-
-.nivel-medio {
-  color: var(--risk-medium);
-}
-
+/* ============================================================
+   Bloques y subheaders
+   ============================================================ */
 .riesgos-bloque {
-  margin-top: 36px;
+  margin-top: 40px;
 }
 
 .riesgos-subheader {
@@ -98,14 +143,23 @@
 }
 
 .riesgos-subheader p {
+  margin: 0;
   color: var(--text);
   font-size: 14px;
   line-height: 1.6;
 }
 
+/* ============================================================
+   Filtros
+   ============================================================ */
 .riesgos-filtros {
   display: grid;
-  grid-template-columns: minmax(150px, 0.8fr) minmax(170px, 1fr) minmax(220px, 1.5fr) auto;
+  grid-template-columns:
+    minmax(140px, 0.9fr)
+    minmax(160px, 1fr)
+    minmax(140px, 0.9fr)
+    minmax(220px, 1.6fr)
+    auto;
   align-items: end;
   gap: 14px;
   padding: 20px;
@@ -125,6 +179,8 @@
   color: var(--text-h);
   font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
 .riesgos-filtros select,
@@ -150,25 +206,32 @@
 
 .riesgos-filtros input::placeholder {
   color: var(--text);
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .riesgos-limpiar {
   min-height: 42px;
-  padding: 10px 14px;
+  padding: 10px 18px;
   border: 1px solid var(--accent-border);
   border-radius: 8px;
   background: var(--accent-bg);
   color: var(--text-h);
   font: 600 13px/1.4 var(--sans);
   cursor: pointer;
-  transition: background-color 180ms ease;
+  transition: background-color 180ms ease, transform 180ms ease;
 }
 
 .riesgos-limpiar:hover {
   background: var(--accent-border);
 }
 
+.riesgos-limpiar:active {
+  transform: translateY(1px);
+}
+
+/* ============================================================
+   Tabla
+   ============================================================ */
 .riesgos-tabla-info {
   display: flex;
   justify-content: flex-end;
@@ -191,7 +254,7 @@
 
 .riesgos-tabla {
   width: 100%;
-  min-width: 850px;
+  min-width: 900px;
   border-collapse: collapse;
   text-align: left;
   font-size: 13px;
@@ -199,18 +262,24 @@
 
 .riesgos-tabla th,
 .riesgos-tabla td {
-  padding: 14px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
 
-.riesgos-tabla th {
+.riesgos-tabla thead th {
+  position: sticky;
+  top: 0;
   background: var(--code-bg);
   color: var(--text-h);
   font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
   white-space: nowrap;
+  z-index: 1;
 }
 
 .riesgos-tabla td {
@@ -219,6 +288,10 @@
 
 .riesgos-tabla tbody tr {
   transition: background-color 160ms ease;
+}
+
+.riesgos-tabla tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--code-bg) 40%, transparent);
 }
 
 .riesgos-tabla tbody tr:hover {
@@ -236,15 +309,56 @@
   white-space: nowrap;
 }
 
+.riesgos-tabla .riesgo-nombre {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+/* Chips de probabilidad e impacto */
+.riesgo-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip-prob-alta,
+.chip-imp-alto {
+  color: var(--risk-high);
+  border-color: var(--risk-high);
+  background: var(--risk-high-bg);
+}
+
+.chip-prob-media,
+.chip-imp-medio {
+  color: var(--risk-medium);
+  border-color: var(--risk-medium);
+  background: var(--risk-medium-bg);
+}
+
+.chip-prob-baja {
+  color: var(--risk-low);
+  border-color: var(--risk-low);
+  background: var(--risk-low-bg);
+}
+
+/* Badge de nivel */
 .riesgo-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 9px;
+  padding: 5px 10px;
   border: 1px solid var(--border);
   border-radius: 7px;
   font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.3px;
   white-space: nowrap;
 }
 
@@ -273,12 +387,16 @@
 }
 
 .riesgos-vacio {
-  padding: 30px !important;
+  padding: 40px !important;
   text-align: center;
+  color: var(--text);
 }
 
+/* ============================================================
+   Matriz de riesgos
+   ============================================================ */
 .riesgos-matriz-contenedor {
-  padding: 22px;
+  padding: 24px;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--bg);
@@ -287,31 +405,102 @@
 
 .riesgos-matriz {
   display: grid;
-  grid-template-columns: 54px repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: 110px repeat(2, minmax(0, 1fr));
+  gap: 10px;
   width: 100%;
-  max-width: 680px;
+  max-width: 560px;
   margin: 0 auto;
 }
 
 .matriz-celda {
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   min-width: 0;
-  min-height: 56px;
-  padding: 8px;
+  min-height: 72px;
+  padding: 10px;
   box-sizing: border-box;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
+  text-align: center;
 }
 
 .matriz-encabezado {
+  min-height: 40px;
   border-color: transparent;
   background: var(--code-bg);
   color: var(--text-h);
   font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.matriz-esquina {
+  position: relative;
+  min-height: 40px;
+  border-color: transparent;
+  background: var(--code-bg);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.matriz-eje-y,
+.matriz-eje-x {
+  position: absolute;
+  line-height: 1;
+}
+
+.matriz-eje-y {
+  top: 6px;
+  left: 8px;
+}
+
+.matriz-eje-x {
+  right: 8px;
+  bottom: 6px;
+}
+
+.matriz-encabezado-fila {
+  justify-content: center;
+  align-items: center;
+}
+
+.matriz-dato {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.matriz-dato:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.matriz-numero {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.matriz-etiqueta {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.matriz-vacia {
+  background: var(--code-bg);
+  color: var(--text);
+  border-style: dashed;
+  opacity: 0.7;
 }
 
 .matriz-bajo {
@@ -360,30 +549,23 @@
   border-radius: 50%;
 }
 
-.matriz-punto-bajo {
-  background: var(--risk-low);
-}
-
-.matriz-punto-medio {
-  background: var(--risk-medium);
-}
-
-.matriz-punto-alto {
-  background: var(--risk-high);
-}
-
-.matriz-punto-critico {
-  background: var(--risk-critical);
-}
+.matriz-punto-bajo    { background: var(--risk-low); }
+.matriz-punto-medio   { background: var(--risk-medium); }
+.matriz-punto-alto    { background: var(--risk-high); }
+.matriz-punto-critico { background: var(--risk-critical); }
 
 .matriz-nota {
-  margin-top: 18px;
+  margin: 18px auto 0;
+  max-width: 620px;
   color: var(--text);
   font-size: 12px;
   line-height: 1.6;
   text-align: center;
 }
 
+/* ============================================================
+   Gráficos
+   ============================================================ */
 .riesgos-graficos {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -417,17 +599,17 @@
   margin: 0 auto;
 }
 
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 1050px) {
   .riesgos-filtros {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .riesgos-filtros .riesgos-busqueda {
-    grid-column: span 1;
-  }
-
   .riesgos-limpiar {
-    justify-self: start;
+    grid-column: span 2;
+    justify-self: stretch;
   }
 }
 
@@ -446,9 +628,17 @@
     padding: 24px 16px;
   }
 
+  .riesgos-header h2 {
+    font-size: 22px;
+  }
+
   .seccion-riesgos .riesgo-kpi,
   .seccion-riesgos .riesgo-grafico-card {
     padding: 16px;
+  }
+
+  .seccion-riesgos .riesgo-kpi {
+    padding-left: 20px;
   }
 
   .riesgos-kpi-grid {
@@ -456,7 +646,7 @@
   }
 
   .riesgo-kpi-numero {
-    font-size: 27px;
+    font-size: 26px;
   }
 
   .riesgos-filtros {
@@ -464,33 +654,41 @@
     padding: 16px;
   }
 
-  .riesgos-filtros .riesgos-busqueda {
-    grid-column: auto;
-  }
-
   .riesgos-limpiar {
+    grid-column: auto;
     width: 100%;
   }
 
   .riesgos-matriz-contenedor {
-    padding: 12px;
+    padding: 14px;
     overflow-x: auto;
   }
 
   .riesgos-matriz {
-    grid-template-columns: 38px repeat(5, minmax(38px, 1fr));
-    gap: 4px;
+    grid-template-columns: 88px repeat(2, minmax(80px, 1fr));
+    gap: 6px;
     min-width: 260px;
   }
 
   .matriz-celda {
-    min-height: 42px;
-    padding: 4px;
+    min-height: 60px;
+    padding: 6px;
     font-size: 12px;
   }
 
-  .matriz-encabezado {
+  .matriz-numero {
+    font-size: 18px;
+  }
+
+  .matriz-encabezado,
+  .matriz-esquina {
+    min-height: 34px;
     font-size: 10px;
+  }
+
+  .matriz-eje-y,
+  .matriz-eje-x {
+    display: none;
   }
 
   .matriz-leyenda {
@@ -503,9 +701,13 @@
   }
 }
 
+/* ============================================================
+   Accesibilidad
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .riesgos-limpiar,
-  .riesgos-tabla tbody tr {
+  .riesgos-tabla tbody tr,
+  .matriz-dato {
     transition: none;
   }
 }

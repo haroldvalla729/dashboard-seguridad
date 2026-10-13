@@ -108,11 +108,3 @@ export const riesgos = [
       "Nivel de Riesgo": "Alto"
   }
 ];
-
-export function calcularNivel(prob, imp) {
-  const s = prob * imp;
-  if (s >= 16) return "Crítico";
-  if (s >= 12) return "Alto";
-  if (s >= 6)  return "Medio";
-  return "Bajo";
-}

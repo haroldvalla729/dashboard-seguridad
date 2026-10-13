@@ -1,4 +1,3 @@
-
 import { Fragment, useMemo, useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
@@ -11,7 +10,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { riesgos, calcularNivel } from "../data/riesgos";
+import { riesgos } from "../data/riesgos";
 import "./styles/SeccionRiesgos.css";
 
 ChartJS.register(
@@ -24,95 +23,115 @@ ChartJS.register(
 );
 
 const niveles = ["Bajo", "Medio", "Alto", "Crítico"];
+const probabilidades = ["Baja", "Media", "Alta"];
+const impactos = ["Medio", "Alto"];
 
-function obtenerColor(variable) {
-  if (typeof window === "undefined") return "#888888";
+const clasePorNivel = {
+  Bajo: "bajo",
+  Medio: "medio",
+  Alto: "alto",
+  Crítico: "critico",
+};
+
+const ordenNivel = { "Bajo": 1, "Medio": 2, "Alto": 3, "Crítico": 4 };
+
+function obtenerColor(variable, respaldo = "#888888") {
+  if (typeof window === "undefined") return respaldo;
 
   return (
     getComputedStyle(document.documentElement)
       .getPropertyValue(variable)
-      .trim() || "#888888"
+      .trim() || respaldo
   );
 }
 
 export default function SeccionRiesgos() {
   const [fNivel, setFNivel] = useState("");
-  const [fActivo, setFActivo] = useState("");
+  const [fProbabilidad, setFProbabilidad] = useState("");
+  const [fImpacto, setFImpacto] = useState("");
   const [buscar, setBuscar] = useState("");
-
-  const activos = useMemo(
-    () => [...new Set(riesgos.map((r) => r.activo))],
-    []
-  );
 
   const filtrados = useMemo(() => {
     const texto = buscar.trim().toLowerCase();
 
-    return riesgos.filter(
-      (r) =>
-        (!fNivel || calcularNivel(r.prob, r.imp) === fNivel) &&
-        (!fActivo || r.activo === fActivo) &&
-        (!texto ||
-          r.amenaza.toLowerCase().includes(texto) ||
-          r.activo.toLowerCase().includes(texto) ||
-          r.vuln.toLowerCase().includes(texto))
-    );
-  }, [fNivel, fActivo, buscar]);
+    return riesgos.filter((riesgo) => {
+      const coincideNivel = !fNivel || riesgo["Nivel de Riesgo"] === fNivel;
+      const coincideProbabilidad =
+        !fProbabilidad || riesgo["Probabilidad"] === fProbabilidad;
+      const coincideImpacto =
+        !fImpacto || riesgo["Impacto"] === fImpacto;
+
+      const coincideBusqueda =
+        !texto ||
+        [
+          riesgo["N°"],
+          riesgo["Riesgo"],
+          riesgo["Descripción del riesgo"],
+          riesgo["Consecuencia"],
+          riesgo["Probabilidad"],
+          riesgo["Impacto"],
+          riesgo["Nivel de Riesgo"],
+        ].some((valor) =>
+          String(valor ?? "").toLowerCase().includes(texto)
+        );
+
+      return (
+        coincideNivel &&
+        coincideProbabilidad &&
+        coincideImpacto &&
+        coincideBusqueda
+      );
+    });
+  }, [fNivel, fProbabilidad, fImpacto, buscar]);
 
   const conteo = (nivel, lista = riesgos) =>
-    lista.filter(
-      (r) => calcularNivel(r.prob, r.imp) === nivel
-    ).length;
+    lista.filter((riesgo) => riesgo["Nivel de Riesgo"] === nivel).length;
+
+  const conteoProbabilidad = (probabilidad, lista = riesgos) =>
+    lista.filter((riesgo) => riesgo["Probabilidad"] === probabilidad).length;
 
   const coloresNivel = {
     Bajo: obtenerColor("--risk-low"),
     Medio: obtenerColor("--risk-medium"),
     Alto: obtenerColor("--risk-high"),
-    "Crítico": obtenerColor("--risk-critical"),
+    Crítico: obtenerColor("--risk-critical"),
   };
 
-  const nivelesData = useMemo(
-    () => ({
-      labels: niveles,
-      datasets: [
-        {
-          label: "Cantidad de riesgos",
-          data: niveles.map((n) => conteo(n, filtrados)),
-          backgroundColor: niveles.map((n) => coloresNivel[n]),
-          borderRadius: 7,
-          borderSkipped: false,
-          maxBarThickness: 52,
-        },
-      ],
-    }),
-    [filtrados]
-  );
+  const coloresProbabilidad = [
+    obtenerColor("--risk-low"),
+    obtenerColor("--risk-medium"),
+    obtenerColor("--risk-high"),
+  ];
 
-  const activosData = useMemo(
-    () => ({
-      labels: activos,
-      datasets: [
-        {
-          label: "Riesgos por activo",
-          data: activos.map(
-            (activo) =>
-              filtrados.filter((r) => r.activo === activo).length
-          ),
-          backgroundColor: [
-            obtenerColor("--accent"),
-            obtenerColor("--risk-low"),
-            obtenerColor("--risk-medium"),
-            obtenerColor("--risk-high"),
-            obtenerColor("--risk-critical"),
-          ],
-          borderColor: obtenerColor("--bg"),
-          borderWidth: 3,
-          hoverOffset: 7,
-        },
-      ],
-    }),
-    [activos, filtrados]
-  );
+  const nivelesData = {
+    labels: niveles,
+    datasets: [
+      {
+        label: "Cantidad de riesgos",
+        data: niveles.map((nivel) => conteo(nivel, filtrados)),
+        backgroundColor: niveles.map((nivel) => coloresNivel[nivel]),
+        borderRadius: 7,
+        borderSkipped: false,
+        maxBarThickness: 52,
+      },
+    ],
+  };
+
+  const probabilidadesData = {
+    labels: probabilidades,
+    datasets: [
+      {
+        label: "Riesgos por probabilidad",
+        data: probabilidades.map((probabilidad) =>
+          conteoProbabilidad(probabilidad, filtrados)
+        ),
+        backgroundColor: coloresProbabilidad,
+        borderColor: obtenerColor("--bg"),
+        borderWidth: 3,
+        hoverOffset: 7,
+      },
+    ],
+  };
 
   const opcionesBarras = {
     responsive: true,
@@ -129,10 +148,7 @@ export default function SeccionRiesgos() {
       },
       y: {
         beginAtZero: true,
-        ticks: {
-          precision: 0,
-          color: obtenerColor("--text"),
-        },
+        ticks: { precision: 0, color: obtenerColor("--text") },
         grid: { color: obtenerColor("--border") },
         border: { display: false },
       },
@@ -160,11 +176,9 @@ export default function SeccionRiesgos() {
     <section id="riesgos" className="seccion-riesgos">
       <header className="riesgos-header">
         <span className="riesgos-etiqueta">
-          04 · EVALUACIÓN Y TRATAMIENTO
+          04 · Evaluación y tratamiento
         </span>
-
         <h2>Gestión de Riesgos</h2>
-
         <p>
           Identificación, análisis y evaluación de amenazas que pueden
           afectar los activos de información de la organización.
@@ -172,64 +186,63 @@ export default function SeccionRiesgos() {
         </p>
       </header>
 
+      {/* KPIs */}
       <div className="riesgos-kpi-grid">
-        <article className="riesgo-kpi">
-          <span className="riesgo-kpi-titulo">Total de riesgos</span>
-          <strong className="riesgo-kpi-numero">
-            {riesgos.length}
-          </strong>
-          <span className="riesgo-kpi-detalle">
-            Riesgos identificados
-          </span>
+        <article className="riesgo-kpi kpi-total">
+          <div className="kpi-top">
+            <span className="riesgo-kpi-titulo">Total de riesgos</span>
+            <span className="kpi-punto" aria-hidden="true" />
+          </div>
+          <strong className="riesgo-kpi-numero">{riesgos.length}</strong>
+          <span className="riesgo-kpi-detalle">Riesgos identificados</span>
         </article>
 
-        <article className="riesgo-kpi">
-          <span className="riesgo-kpi-titulo">Riesgos críticos</span>
-          <strong className="riesgo-kpi-numero nivel-critico">
-            {conteo("Crítico")}
-          </strong>
-          <span className="riesgo-kpi-detalle">
-            Atención prioritaria
-          </span>
+        <article className="riesgo-kpi kpi-critico">
+          <div className="kpi-top">
+            <span className="riesgo-kpi-titulo">Críticos</span>
+            <span className="kpi-punto" aria-hidden="true" />
+          </div>
+          <strong className="riesgo-kpi-numero">{conteo("Crítico")}</strong>
+          <span className="riesgo-kpi-detalle">Atención prioritaria</span>
         </article>
 
-        <article className="riesgo-kpi">
-          <span className="riesgo-kpi-titulo">Riesgos altos</span>
-          <strong className="riesgo-kpi-numero nivel-alto">
-            {conteo("Alto")}
-          </strong>
-          <span className="riesgo-kpi-detalle">
-            Requieren tratamiento
-          </span>
+        <article className="riesgo-kpi kpi-alto">
+          <div className="kpi-top">
+            <span className="riesgo-kpi-titulo">Altos</span>
+            <span className="kpi-punto" aria-hidden="true" />
+          </div>
+          <strong className="riesgo-kpi-numero">{conteo("Alto")}</strong>
+          <span className="riesgo-kpi-detalle">Requieren tratamiento</span>
         </article>
 
-        <article className="riesgo-kpi">
-          <span className="riesgo-kpi-titulo">Riesgos medios</span>
-          <strong className="riesgo-kpi-numero nivel-medio">
-            {conteo("Medio")}
-          </strong>
-          <span className="riesgo-kpi-detalle">
-            Requieren seguimiento
-          </span>
+        <article className="riesgo-kpi kpi-medio">
+          <div className="kpi-top">
+            <span className="riesgo-kpi-titulo">Medios</span>
+            <span className="kpi-punto" aria-hidden="true" />
+          </div>
+          <strong className="riesgo-kpi-numero">{conteo("Medio")}</strong>
+          <span className="riesgo-kpi-detalle">Requieren seguimiento</span>
         </article>
       </div>
 
+      {/* Consulta */}
       <div className="riesgos-bloque">
         <div className="riesgos-subheader">
           <h3>Consultar riesgos</h3>
           <p>
-            Filtra los registros por nivel, activo o palabras clave.
+            Filtra los registros por nivel, probabilidad, impacto o
+            palabras clave.
           </p>
         </div>
 
         <div className="riesgos-filtros">
           <label>
-            <span>Nivel de riesgo</span>
+            <span>Nivel</span>
             <select
               value={fNivel}
               onChange={(e) => setFNivel(e.target.value)}
             >
-              <option value="">Todos los niveles</option>
+              <option value="">Todos</option>
               {[...niveles].reverse().map((nivel) => (
                 <option key={nivel} value={nivel}>
                   {nivel}
@@ -239,15 +252,30 @@ export default function SeccionRiesgos() {
           </label>
 
           <label>
-            <span>Activo tecnológico</span>
+            <span>Probabilidad</span>
             <select
-              value={fActivo}
-              onChange={(e) => setFActivo(e.target.value)}
+              value={fProbabilidad}
+              onChange={(e) => setFProbabilidad(e.target.value)}
             >
-              <option value="">Todos los activos</option>
-              {activos.map((activo) => (
-                <option key={activo} value={activo}>
-                  {activo}
+              <option value="">Todas</option>
+              {probabilidades.map((probabilidad) => (
+                <option key={probabilidad} value={probabilidad}>
+                  {probabilidad}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            <span>Impacto</span>
+            <select
+              value={fImpacto}
+              onChange={(e) => setFImpacto(e.target.value)}
+            >
+              <option value="">Todos</option>
+              {impactos.map((impacto) => (
+                <option key={impacto} value={impacto}>
+                  {impacto}
                 </option>
               ))}
             </select>
@@ -257,7 +285,7 @@ export default function SeccionRiesgos() {
             <span>Buscar</span>
             <input
               type="search"
-              placeholder="Amenaza, activo o vulnerabilidad..."
+              placeholder="Riesgo, descripción o consecuencia…"
               value={buscar}
               onChange={(e) => setBuscar(e.target.value)}
             />
@@ -268,11 +296,12 @@ export default function SeccionRiesgos() {
             className="riesgos-limpiar"
             onClick={() => {
               setFNivel("");
-              setFActivo("");
+              setFProbabilidad("");
+              setFImpacto("");
               setBuscar("");
             }}
           >
-            Limpiar filtros
+            Limpiar
           </button>
         </div>
 
@@ -287,42 +316,38 @@ export default function SeccionRiesgos() {
           <table className="riesgos-tabla">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Activo</th>
-                <th>Amenaza</th>
-                <th>Vulnerabilidad</th>
-                <th>Prob.</th>
-                <th>Impacto</th>
-                <th>Nivel</th>
+                <th scope="col">ID</th>
+                <th scope="col">Riesgo</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Consecuencia</th>
+                <th scope="col">Probabilidad</th>
+                <th scope="col">Impacto</th>
+                <th scope="col">Nivel</th>
               </tr>
             </thead>
-
             <tbody>
               {filtrados.map((riesgo) => {
-                const nivel = calcularNivel(
-                  riesgo.prob,
-                  riesgo.imp
-                );
-
-                const claseNivel = {
-                  Bajo: "bajo",
-                  Medio: "medio",
-                  Alto: "alto",
-                  "Crítico": "critico",
-                }[nivel];
+                const nivel = riesgo["Nivel de Riesgo"];
+                const claseNivel = clasePorNivel[nivel] ?? "medio";
 
                 return (
-                  <tr key={riesgo.id}>
-                    <td className="riesgo-id">{riesgo.id}</td>
-                    <td>{riesgo.activo}</td>
-                    <td>{riesgo.amenaza}</td>
-                    <td>{riesgo.vuln}</td>
-                    <td>{riesgo.prob}</td>
-                    <td>{riesgo.imp}</td>
+                  <tr key={riesgo["N°"]}>
+                    <td className="riesgo-id">#{riesgo["N°"]}</td>
+                    <td className="riesgo-nombre">{riesgo["Riesgo"]}</td>
+                    <td>{riesgo["Descripción del riesgo"]}</td>
+                    <td>{riesgo["Consecuencia"]}</td>
                     <td>
-                      <span
-                        className={`riesgo-badge riesgo-${claseNivel}`}
-                      >
+                      <span className={`riesgo-chip chip-prob-${riesgo["Probabilidad"].toLowerCase()}`}>
+                        {riesgo["Probabilidad"]}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`riesgo-chip chip-imp-${riesgo["Impacto"].toLowerCase()}`}>
+                        {riesgo["Impacto"]}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`riesgo-badge riesgo-${claseNivel}`}>
                         {nivel}
                       </span>
                     </td>
@@ -342,24 +367,24 @@ export default function SeccionRiesgos() {
         </div>
       </div>
 
+      {/* Matriz */}
       <div className="riesgos-bloque">
         <div className="riesgos-subheader">
           <h3>Matriz de riesgos</h3>
           <p>
-            Distribución de riesgos según la probabilidad y el impacto,
-            en una escala del 1 al 5.
+            Distribución de los riesgos según las categorías de
+            probabilidad e impacto registradas.
           </p>
         </div>
 
         <MatrizRiesgos />
       </div>
 
+      {/* Gráficos */}
       <div className="riesgos-bloque">
         <div className="riesgos-subheader">
           <h3>Resumen estadístico</h3>
-          <p>
-            Los gráficos se actualizan según los filtros aplicados.
-          </p>
+          <p>Los gráficos se actualizan según los filtros aplicados.</p>
         </div>
 
         <div className="riesgos-graficos">
@@ -371,9 +396,9 @@ export default function SeccionRiesgos() {
           </article>
 
           <article className="riesgo-grafico-card">
-            <h4>Riesgos por activo</h4>
+            <h4>Riesgos por probabilidad</h4>
             <div className="riesgo-grafico riesgo-grafico-dona">
-              <Doughnut data={activosData} options={opcionesDona} />
+              <Doughnut data={probabilidadesData} options={opcionesDona} />
             </div>
           </article>
         </div>
@@ -383,52 +408,73 @@ export default function SeccionRiesgos() {
 }
 
 function MatrizRiesgos() {
-  const filas = [5, 4, 3, 2, 1];
-  const columnas = [1, 2, 3, 4, 5];
-
-  const clasePorNivel = {
+  const clasePorNivelMatriz = {
     Bajo: "matriz-bajo",
     Medio: "matriz-medio",
     Alto: "matriz-alto",
-    "Crítico": "matriz-critico",
+    Crítico: "matriz-critico",
   };
 
   return (
     <div className="riesgos-matriz-contenedor">
       <div className="riesgos-matriz">
-        <div className="matriz-celda matriz-encabezado" />
+        <div className="matriz-celda matriz-esquina">
+          <span className="matriz-eje-y">Probabilidad</span>
+          <span className="matriz-eje-x">Impacto</span>
+        </div>
 
-        {columnas.map((impacto) => (
+        {impactos.map((impacto) => (
           <div
-            key={`col-${impacto}`}
+            key={`impacto-${impacto}`}
             className="matriz-celda matriz-encabezado"
           >
-            I={impacto}
+            {impacto}
           </div>
         ))}
 
-        {filas.map((probabilidad) => (
-          <Fragment key={`fila-${probabilidad}`}>
-            <div className="matriz-celda matriz-encabezado">
-              P={probabilidad}
+        {probabilidades.map((probabilidad) => (
+          <Fragment key={probabilidad}>
+            <div className="matriz-celda matriz-encabezado matriz-encabezado-fila">
+              {probabilidad}
             </div>
 
-            {columnas.map((impacto) => {
-              const nivel = calcularNivel(probabilidad, impacto);
+            {impactos.map((impacto) => {
+              const riesgosCelda = riesgos.filter(
+                (riesgo) =>
+                  riesgo["Probabilidad"] === probabilidad &&
+                  riesgo["Impacto"] === impacto
+              );
 
-              const cantidad = riesgos.filter(
-                (r) =>
-                  r.prob === probabilidad &&
-                  r.imp === impacto
-              ).length;
+              const nivelesPresentes = [
+                ...new Set(
+                  riesgosCelda.map((r) => r["Nivel de Riesgo"])
+                ),
+              ].sort((a, b) => ordenNivel[b] - ordenNivel[a]);
+
+              const nivelPrincipal = nivelesPresentes[0] ?? null;
+              const claseNivel = nivelPrincipal
+                ? clasePorNivelMatriz[nivelPrincipal]
+                : "matriz-vacia";
 
               return (
                 <div
                   key={`${probabilidad}-${impacto}`}
-                  className={`matriz-celda ${clasePorNivel[nivel]}`}
-                  title={`Probabilidad: ${probabilidad}, impacto: ${impacto}, nivel: ${nivel}, riesgos: ${cantidad}`}
+                  className={`matriz-celda matriz-dato ${claseNivel}`}
+                  title={
+                    `Probabilidad: ${probabilidad}; ` +
+                    `impacto: ${impacto}; ` +
+                    `riesgos: ${riesgosCelda.length}; ` +
+                    `niveles: ${nivelesPresentes.join(", ") || "Sin registros"}`
+                  }
                 >
-                  {cantidad > 0 ? cantidad : "—"}
+                  <strong className="matriz-numero">
+                    {riesgosCelda.length || "—"}
+                  </strong>
+                  {nivelesPresentes.length > 0 && (
+                    <span className="matriz-etiqueta">
+                      {nivelesPresentes.join(" / ")}
+                    </span>
+                  )}
                 </div>
               );
             })}
@@ -439,20 +485,18 @@ function MatrizRiesgos() {
       <div className="matriz-leyenda">
         {niveles.map((nivel) => (
           <div key={nivel} className="matriz-leyenda-item">
-            <span className={`matriz-punto matriz-punto-${{
-              Bajo: "bajo",
-              Medio: "medio",
-              Alto: "alto",
-              "Crítico": "critico",
-            }[nivel]}`} />
+            <span
+              className={`matriz-punto matriz-punto-${clasePorNivel[nivel]}`}
+            />
             <span>{nivel}</span>
           </div>
         ))}
       </div>
 
       <p className="matriz-nota">
-        P = probabilidad · I = impacto. Cada celda indica cuántos
-        riesgos coinciden con esa combinación.
+        Cada celda muestra la cantidad de riesgos que coinciden con la
+        probabilidad y el impacto indicados. Si una combinación contiene
+        distintos niveles, se muestran todos.
       </p>
     </div>
   );
