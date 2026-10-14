@@ -1,133 +1,1145 @@
-.iso-normas {
-  font-size: .85rem;
-  color: var(--muted);
-  margin-top: 6px;
+/* ============================================================
+   SECCIÓN PLAN DE ACCIÓN · mismo lenguaje visual que
+   SECCIÓN EMPRESA y SECCIÓN RIESGOS
+   Colores: solo variables globales del index.css
+   ============================================================ */
+
+.seccion-plan {
+  --pl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+  text-align: left;
+  scroll-margin-top: 85px;
+  color: var(--text);
 }
 
-.iso-bloque { margin-top: 32px; }
+.seccion-plan h2,
+.seccion-plan h3,
+.seccion-plan h4 {
+  color: var(--text-h);
+}
 
-.iso-subheader { margin-bottom: 16px; }
-.iso-subheader h3 { color: var(--primary); font-size: 1.2rem; }
-.iso-subheader p { color: var(--muted); font-size: .9rem; }
+.seccion-plan p {
+  line-height: 1.65;
+}
 
-/* Introducción */
-.iso-intro-grid {
+/* Foco visible consistente para todo lo interactivo */
+.seccion-plan :is(button, input, select):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Animaciones
+   (fill-mode "backwards": al terminar, el hover puede
+   volver a mover los elementos)
+   ============================================================ */
+@keyframes plan-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes plan-pulso {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--risk-critical-bg);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.plan-header,
+.seccion-plan .plan-kpi,
+.plan-nivel-card,
+.plan-filtros,
+.plan-accion-card,
+.plan-original-tabla-contenedor {
+  animation: plan-aparecer 0.5s var(--pl-ease) backwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Escalonado sin necesidad de tocar el JSX */
+.plan-kpi-grid > :nth-child(2) { --i: 1; }
+.plan-kpi-grid > :nth-child(3) { --i: 2; }
+.plan-kpi-grid > :nth-child(4) { --i: 3; }
+.plan-niveles-grid > :nth-child(2) { --i: 1; }
+.plan-niveles-grid > :nth-child(3) { --i: 2; }
+.plan-niveles-grid > :nth-child(4) { --i: 3; }
+
+/* Aparición al hacer scroll (mejora progresiva) */
+@supports (animation-timeline: view()) {
+  .plan-accion-card,
+  .plan-original-tabla-contenedor {
+    animation: plan-aparecer linear backwards;
+    animation-delay: 0s;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.plan-header {
+  margin-bottom: 28px;
+}
+
+.plan-etiqueta {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.plan-header h2 {
+  margin: 0 0 12px;
+}
+
+.plan-header > p {
+  max-width: 820px;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.plan-header > .plan-alcance {
+  color: var(--text);
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+/* ============================================================
+   KPIs (botones de filtro por prioridad)
+   ============================================================ */
+.plan-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
-.iso-intro-card h4 { color: var(--primary); margin-bottom: 6px; }
-.iso-intro-codexa { background: linear-gradient(135deg, #eef7f9, #ffffff); border-left: 4px solid var(--accent); }
 
-/* Resumen */
-.iso-resumen {
-  display: flex; gap: 30px; flex-wrap: wrap;
-  background: var(--primary); color: #fff;
-  padding: 20px; border-radius: 14px; margin-bottom: 18px;
+.seccion-plan .plan-kpi {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 20px 18px 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--pl-ease),
+    background 180ms ease;
 }
-.iso-resumen-numero { font-size: 2.4rem; font-weight: 800; display: block; }
-.iso-resumen-texto { font-size: .85rem; opacity: .9; }
 
-/* Categorías Anexo A */
-.iso-categorias-grid {
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+.seccion-plan button.plan-kpi {
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
 }
-.iso-categoria-card { text-align: center; }
-.iso-categoria-icono { font-size: 2rem; }
-.iso-categoria-numero { font-size: 2.2rem; font-weight: 800; }
-.iso-categoria-label { font-size: .8rem; color: var(--muted); }
-.iso-categoria-ejemplos {
-  list-style: none; text-align: left;
-  margin-top: 10px; font-size: .78rem; color: var(--muted);
-}
-.iso-categoria-ejemplos li { padding: 2px 0; }
 
-/* Riesgos y controles */
-.iso-riesgos-list { display: grid; gap: 18px; }
-.iso-riesgo-card { padding: 22px; }
-.iso-riesgo-header h4 { color: var(--primary); margin: 8px 0; }
-.iso-riesgo-activo { font-size: .85rem; color: var(--muted); }
-.iso-riesgo-badge {
-  display: inline-block; padding: 4px 12px; border-radius: 20px;
-  font-size: .75rem; font-weight: 700; color: #fff;
+.seccion-plan .plan-kpi:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
 }
-.iso-riesgo-badge.critico { background: #e74c3c; }
-.iso-riesgo-badge.alto { background: #e67e22; }
-.iso-riesgo-badge.medio { background: #f39c12; }
 
-.iso-riesgo-controles {
-  display: grid; gap: 12px; margin-top: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+.seccion-plan .plan-kpi.es-filtro:active {
+  transform: translateY(-1px) scale(0.98);
 }
-.iso-control-item {
-  background: #f8fafc; border-radius: 10px; padding: 14px;
+
+.seccion-plan .plan-kpi.es-filtro[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* Franja superior según la prioridad */
+.seccion-plan .plan-kpi::before {
+  content: "";
+  position: absolute;
+  inset: 0 18px auto 18px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+.plan-kpi.kpi-alta::before  { background: var(--risk-high); }
+.plan-kpi.kpi-media::before { background: var(--risk-medium); }
+.plan-kpi.kpi-baja::before  { background: var(--risk-low); }
+.plan-kpi.kpi-total::before { background: var(--accent); }
+
+.plan-kpi .kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.plan-kpi .kpi-punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.plan-kpi.kpi-alta .kpi-punto  { background: var(--risk-high); }
+.plan-kpi.kpi-media .kpi-punto { background: var(--risk-medium); }
+.plan-kpi.kpi-baja .kpi-punto  { background: var(--risk-low); }
+.plan-kpi.kpi-total .kpi-punto { background: var(--accent); }
+
+.plan-kpi-titulo {
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.plan-kpi-numero {
+  color: var(--text-h);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  transition: transform 200ms var(--pl-ease);
+}
+
+.plan-kpi:hover .plan-kpi-numero {
+  transform: scale(1.1);
+  transform-origin: left center;
+}
+
+.plan-kpi.kpi-alta .plan-kpi-numero  { color: var(--risk-high); }
+.plan-kpi.kpi-media .plan-kpi-numero { color: var(--risk-medium); }
+.plan-kpi.kpi-baja .plan-kpi-numero  { color: var(--risk-low); }
+
+.plan-kpi-detalle {
+  color: var(--text);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Bloques y subheaders
+   ============================================================ */
+.plan-bloque {
+  margin-top: 40px;
+}
+
+.plan-subheader {
+  margin-bottom: 20px;
+}
+
+.plan-subheader h3 {
+  margin: 0 0 8px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.plan-subheader p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   Niveles de riesgo (botones de filtro)
+   ============================================================ */
+.plan-niveles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.plan-nivel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--pl-ease),
+    background 180ms ease;
+}
+
+.plan-nivel-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+.plan-nivel-card:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.plan-nivel-card[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.plan-nivel-etiqueta {
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.plan-nivel-numero {
+  color: var(--text-h);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  transition: transform 200ms var(--pl-ease);
+}
+
+.plan-nivel-card:hover .plan-nivel-numero {
+  transform: scale(1.1);
+  transform-origin: left center;
+}
+
+.plan-nivel-detalle {
+  color: var(--text);
+  font-size: 0.76rem;
+}
+
+.plan-nivel-card.nivel-critico .plan-nivel-numero { color: var(--risk-critical); }
+.plan-nivel-card.nivel-alto .plan-nivel-numero    { color: var(--risk-high); }
+.plan-nivel-card.nivel-medio .plan-nivel-numero   { color: var(--risk-medium); }
+.plan-nivel-card.nivel-bajo .plan-nivel-numero    { color: var(--risk-low); }
+
+/* ============================================================
+   Filtros (sin caja gris, igual que Empresa y Riesgos)
+   ============================================================ */
+.plan-filtros {
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 1fr)
+    minmax(150px, 1fr)
+    minmax(240px, 2fr)
+    auto;
+  align-items: end;
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.plan-filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.plan-filtros label > span {
+  color: var(--text-h);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.plan-filtros select,
+.plan-filtros input {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.83rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.plan-filtros select {
+  cursor: pointer;
+}
+
+.plan-filtros select:hover,
+.plan-filtros input:hover {
+  border-color: var(--accent-border);
+}
+
+.plan-filtros select:focus,
+.plan-filtros input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.plan-filtros input::placeholder {
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.plan-limpiar {
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid var(--accent-border);
+  border-radius: 9px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms var(--pl-ease);
+}
+
+.plan-limpiar:hover {
+  border-color: var(--accent);
+  background: var(--code-bg);
+  transform: translateY(-2px);
+}
+
+.plan-limpiar:active {
+  transform: translateY(0);
+}
+
+/* ---- Chips de filtros activos ---- */
+.plan-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.plan-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px 5px 12px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  animation: plan-aparecer 0.25s var(--pl-ease) backwards;
+  transition: background 160ms ease, transform 160ms var(--pl-ease);
+}
+
+.plan-chip:hover {
+  background: var(--code-bg);
+  transform: translateY(-1px);
+}
+
+.plan-chip::after {
+  content: "✕";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--border);
+  font-size: 0.62rem;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.plan-chip:hover::after {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ---- Contador y botón "Expandir todas" ---- */
+.plan-tabla-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 14px;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.plan-tabla-info strong {
+  color: var(--text-h);
+}
+
+.plan-accion-todas {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms var(--pl-ease);
+}
+
+.plan-accion-todas:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   Tarjetas de acciones · 2 columnas · expandibles
+   ============================================================ */
+.plan-acciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  /* "start": al expandir una tarjeta, la vecina no se estira */
+  align-items: start;
+}
+
+.plan-accion-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--pl-ease);
+}
+
+.plan-accion-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.plan-accion-card.expandido {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+/* Franja superior según el nivel de riesgo */
+.plan-accion-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 22px auto 22px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+.plan-accion-card.nivel-critico::before { background: var(--risk-critical); }
+.plan-accion-card.nivel-alto::before    { background: var(--risk-high); }
+.plan-accion-card.nivel-medio::before   { background: var(--risk-medium); }
+.plan-accion-card.nivel-bajo::before    { background: var(--risk-low); }
+
+.plan-accion-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.plan-accion-ids {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.plan-id-accion,
+.plan-id-riesgo,
+.plan-id-activo {
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--text-h);
+}
+
+.plan-id-sep {
+  opacity: 0.5;
+}
+
+.plan-accion-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Badges: píldora, igual que en Riesgos y Empresa */
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.plan-badge-alta,
+.plan-badge-alto {
+  color: var(--risk-high);
+  background: var(--risk-high-bg);
+  border-color: var(--risk-high);
+}
+
+.plan-badge-media,
+.plan-badge-medio {
+  color: var(--risk-medium);
+  background: var(--risk-medium-bg);
+  border-color: var(--risk-medium);
+}
+
+.plan-badge-baja,
+.plan-badge-bajo {
+  color: var(--risk-low);
+  background: var(--risk-low-bg);
+  border-color: var(--risk-low);
+}
+
+.plan-badge-critico {
+  color: var(--risk-critical);
+  background: var(--risk-critical-bg);
+  border-color: var(--risk-critical);
+  animation: plan-pulso 2.4s ease-in-out infinite;
+}
+
+.plan-accion-titulo {
+  margin: 0 0 14px;
+  color: var(--text-h);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.plan-accion-activo,
+.plan-accion-amenaza {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.plan-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text-h);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ---- Responsable, tratamiento, plazo y estado ---- */
+.plan-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 16px;
+  margin: 8px 0 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--code-bg);
+}
+
+.plan-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.plan-meta-label {
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.plan-meta-valor {
+  color: var(--text-h);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* ---- Controles ISO ---- */
+.plan-controles {
+  margin: 0 0 4px;
+}
+
+.plan-controles-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.plan-control-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  transition: border-color 160ms ease, transform 160ms var(--pl-ease);
+}
+
+.plan-control-chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.plan-control-chip strong {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+}
+
+/* ---- Botón de despliegue ---- */
+.plan-accion-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-h);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.plan-accion-card:hover .plan-accion-toggle,
+.plan-accion-toggle:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.plan-toggle-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.plan-toggle-conteo {
+  flex-shrink: 0;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.plan-chevron {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  margin: 0 4px 4px 0;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform 300ms var(--pl-ease);
+}
+
+.plan-accion-card.expandido .plan-chevron {
+  margin: 4px 4px 0 0;
+  transform: rotate(-135deg);
+}
+
+/* ---- Detalle desplegable (sin saltos de altura) ---- */
+.plan-accion-detalle {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  /* Cerrado: su contenido no recibe foco ni lector de pantalla */
+  visibility: hidden;
+  cursor: default;
+  transition:
+    grid-template-rows 320ms var(--pl-ease),
+    opacity 240ms ease,
+    visibility 0s linear 320ms;
+}
+
+.plan-accion-card.expandido .plan-accion-detalle {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.plan-accion-detalle > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.plan-detalle-cuerpo {
+  display: grid;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+/* Actividades */
+.plan-actividades-bloque {
+  min-width: 0;
+}
+
+.plan-actividades {
+  margin: 4px 0 0;
+  padding-left: 20px;
+  color: var(--text);
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.plan-actividades li {
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+.plan-actividades li::marker {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Indicador (mismo patrón que el bloque de motivación de Empresa) */
+.plan-indicador {
+  padding: 14px 16px;
   border-left: 3px solid var(--accent);
-}
-.iso-control-cabecera {
-  display: flex; justify-content: space-between;
-  font-size: .75rem; margin-bottom: 4px;
-}
-.iso-control-codigo { font-weight: 700; color: var(--primary); }
-.iso-control-categoria { color: var(--muted); }
-.iso-control-item h5 { color: var(--primary); font-size: .92rem; margin-bottom: 4px; }
-.iso-control-item p { font-size: .82rem; color: var(--muted); }
-
-/* Capítulos */
-.iso-capitulos-grid {
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-.iso-capitulo-header {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 8px;
-}
-.iso-capitulo-numero { font-weight: 700; color: var(--primary); }
-.iso-capitulo-grupo {
-  font-size: .7rem; padding: 3px 10px; border-radius: 20px;
-  background: #eef4fb; color: var(--muted); font-weight: 600;
-}
-.iso-capitulo-card h4 { color: var(--primary); margin-bottom: 6px; }
-.iso-capitulo-card p { font-size: .85rem; color: var(--muted); }
-.iso-capitulo-caracteristicas {
-  list-style: none; margin: 8px 0; font-size: .8rem;
-}
-.iso-capitulo-caracteristicas li::before {
-  content: "·"; color: var(--accent); font-weight: 700; margin-right: 6px;
-}
-.iso-capitulo-codexa {
-  margin-top: 8px; font-size: .8rem;
-  padding-top: 8px; border-top: 1px dashed var(--border);
+  border-radius: 0 10px 10px 0;
+  background: var(--accent-bg);
 }
 
-/* PHVA */
-.iso-phva-grid {
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-}
-.iso-phva-icono { font-size: 1.8rem; }
-.iso-phva-card h4 { margin: 6px 0; }
-.iso-phva-card p { font-size: .85rem; color: var(--muted); }
-.iso-phva-caps, .iso-phva-codexa {
-  font-size: .78rem; margin-top: 8px;
-  padding-top: 8px; border-top: 1px dashed var(--border);
+.plan-indicador-texto {
+  margin: 4px 0 6px;
+  color: var(--text-h);
+  font-size: 0.86rem;
+  line-height: 1.6;
 }
 
-/* Tabla integración */
-.iso-tabla {
-  width: 100%; border-collapse: collapse; background: #fff;
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 3px 14px rgba(15,43,70,.08);
-  font-size: .85rem;
+.plan-meta-verificacion {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.8rem;
+  line-height: 1.55;
 }
-.iso-tabla thead { background: var(--primary); color: #fff; }
-.iso-tabla th, .iso-tabla td {
-  padding: 10px 12px; text-align: left;
+
+/* Evidencias */
+.plan-evidencias-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-evidencias-lista li {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--code-bg);
+  color: var(--text);
+  font-size: 0.75rem;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.plan-evidencias-lista li:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+/* ---- Estado sin resultados ---- */
+.plan-vacio {
+  grid-column: 1 / -1;
+  padding: 36px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  text-align: center;
+  animation: plan-aparecer 0.4s var(--pl-ease) backwards;
+}
+
+.plan-vacio p {
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.plan-vacio button {
+  padding: 10px 16px;
+  border: 1px solid var(--accent-border);
+  border-radius: 9px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 160ms var(--pl-ease), background 160ms ease;
+}
+
+.plan-vacio button:hover {
+  background: var(--code-bg);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   Tabla del plan original
+   ============================================================ */
+.plan-original-tabla-contenedor {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.plan-original-tabla-contenedor:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+}
+
+.plan-original-tabla {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.82rem;
+}
+
+.plan-original-tabla th,
+.plan-original-tabla td {
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
-.iso-badge {
-  padding: 3px 10px; border-radius: 20px;
-  font-size: .72rem; font-weight: 700; color: #fff;
+
+.plan-original-tabla thead th {
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
-.iso-badge.si { background: #27ae60; }
-.iso-badge.no { background: #95a5a6; }
+
+.plan-original-tabla td {
+  color: var(--text);
+}
+
+.plan-original-tabla tbody tr {
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.plan-original-tabla tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--code-bg) 40%, transparent);
+}
+
+/* Barra de acento a la izquierda de la fila en hover */
+.plan-original-tabla tbody tr:hover {
+  background: var(--accent-bg);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.plan-original-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.plan-id-cell {
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.plan-riesgos-cell {
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Nota final (mismo patrón que el bloque de motivación)
+   ============================================================ */
+.plan-nota {
+  max-width: 820px;
+  margin: 32px auto 0;
+  padding: 16px 18px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--accent-bg);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   Responsive (mismos puntos de corte que Empresa y Riesgos)
+   ============================================================ */
+@media (max-width: 1100px) {
+  .plan-filtros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plan-busqueda {
+    grid-column: 1 / -1;
+  }
+
+  .plan-limpiar {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 900px) {
+  .plan-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Tarjetas de acciones a una sola columna */
+  .plan-acciones {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .seccion-plan {
+    padding: 20px 16px;
+  }
+
+  .seccion-plan .plan-kpi,
+  .plan-nivel-card {
+    padding: 16px;
+  }
+
+  .plan-kpi-grid,
+  .plan-niveles-grid {
+    gap: 10px;
+  }
+
+  .plan-kpi-numero,
+  .plan-nivel-numero {
+    font-size: 1.5rem;
+  }
+
+  .plan-filtros {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plan-busqueda,
+  .plan-limpiar {
+    grid-column: auto;
+  }
+
+  .plan-accion-card {
+    padding: 18px;
+  }
+
+  .plan-accion-card::before {
+    inset: 0 18px auto 18px;
+  }
+
+  .plan-accion-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .plan-toggle-conteo {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .plan-kpi-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plan-meta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Pantallas táctiles: sin saltos por hover */
+@media (hover: none) {
+  .seccion-plan .plan-kpi:hover,
+  .plan-nivel-card:hover,
+  .plan-accion-card:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Accesibilidad: movimiento reducido
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .seccion-plan *,
+  .seccion-plan *::before,
+  .seccion-plan *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -33,15 +33,15 @@ export default function SeccionISO() {
 
         <div className="iso-intro-grid">
           <div className="card iso-intro-card">
-            <h4>🎯 Objetivo</h4>
+            <h4>Objetivo</h4>
             <p>{introduccion.objetivo}</p>
           </div>
           <div className="card iso-intro-card">
-            <h4>⚙️ Enfoque</h4>
+            <h4>Enfoque</h4>
             <p>{introduccion.enfoque}</p>
           </div>
           <div className="card iso-intro-card iso-intro-codexa">
-            <h4>🏢 Aplicación en CODEXA</h4>
+            <h4>Aplicación en CODEXA</h4>
             <p>{introduccion.aplicacionCodexa}</p>
           </div>
         </div>

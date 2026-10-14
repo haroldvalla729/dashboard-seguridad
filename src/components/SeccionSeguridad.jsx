@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { seguridad } from "../data/seguridad";
 import "./styles/SeccionSeguridad.css";
+
+const plural = (n, singular, pluralTexto) =>
+  `${n} ${n === 1 ? singular : pluralTexto}`;
 
 export default function SeccionSeguridad() {
   const {
@@ -104,7 +108,7 @@ export default function SeccionSeguridad() {
                       className={`seguridad-badge seguridad-nivel-${a.clasificacion
                         .toLowerCase()
                         .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")}`}
+                        .replace(/[̀-ͯ]/g, "")}`}
                     >
                       {a.clasificacion}
                     </span>
@@ -123,61 +127,19 @@ export default function SeccionSeguridad() {
       <div className="seguridad-bloque">
         <div className="seguridad-subheader">
           <h3>Seguridad Física y Lógica</h3>
-          <p>Medidas complementarias para proteger instalaciones, equipos, sistemas y datos.</p>
+          <p>
+            Medidas complementarias para proteger instalaciones, equipos,
+            sistemas y datos. Elige un tipo de seguridad y haz clic en una categoría
+            para ver sus medidas.
+          </p>
         </div>
 
-        <div className="seguridad-medidas-grid">
-          {/* FÍSICA */}
-          <article className="card seguridad-medidas-card">
-            <div className="seguridad-medidas-titulo">
-              <span className="seguridad-medidas-icono">F</span>
-              <div>
-                <h4>{seguridadFisica.titulo}</h4>
-                <p>{seguridadFisica.descripcion}</p>
-              </div>
-            </div>
-
-            {seguridadFisica.categorias.map((cat) => (
-              <div key={cat.categoria} className="seguridad-categoria">
-                <h5>
-                  {cat.icono} {cat.categoria}
-                  <small> · {cat.controlISO}</small>
-                </h5>
-                <ul className="seguridad-lista">
-                  {cat.medidas.map((m) => <li key={m}>{m}</li>)}
-                </ul>
-              </div>
-            ))}
-          </article>
-
-          {/* LÓGICA */}
-          <article className="card seguridad-medidas-card">
-            <div className="seguridad-medidas-titulo">
-              <span className="seguridad-medidas-icono">L</span>
-              <div>
-                <h4>{seguridadLogica.titulo}</h4>
-                <p>{seguridadLogica.descripcion}</p>
-              </div>
-            </div>
-
-            {seguridadLogica.categorias.map((cat) => (
-              <div key={cat.categoria} className="seguridad-categoria">
-                <h5>
-                  {cat.icono} {cat.categoria}
-                  <small> · {cat.controlISO}</small>
-                </h5>
-                <ul className="seguridad-lista">
-                  {cat.medidas.map((m) => <li key={m}>{m}</li>)}
-                </ul>
-                {cat.riesgosMitigados && (
-                  <p className="seguridad-riesgos-mitigados">
-                    <strong>Mitiga:</strong> {cat.riesgosMitigados.join(", ")}
-                  </p>
-                )}
-              </div>
-            ))}
-          </article>
-        </div>
+        <MedidasSeguridad
+          grupos={[
+            { clave: "fisica", letra: "F", datos: seguridadFisica },
+            { clave: "logica", letra: "L", datos: seguridadLogica },
+          ]}
+        />
       </div>
 
       {/* ============ MATRIZ CID ============ */}
@@ -204,5 +166,175 @@ export default function SeccionSeguridad() {
         </div>
       </div>
     </section>
+  );
+}
+
+/*
+ * Seguridad física y lógica con pestañas: solo se ve un grupo a la vez, así
+ * que la diferencia de categorías entre ambos no deja espacios en blanco.
+ * Dentro del grupo, cada categoría es una tarjeta que se expande al hacer clic.
+ */
+function MedidasSeguridad({ grupos }) {
+  const [activo, setActivo] = useState(grupos[0].clave);
+  // Se guardan como "grupo:categoría" para conservar lo abierto al cambiar de pestaña
+  const [abiertas, setAbiertas] = useState(() => new Set());
+
+  const grupo = grupos.find((g) => g.clave === activo) ?? grupos[0];
+  const { clave, letra, datos } = grupo;
+  const categorias = datos.categorias ?? [];
+  const idDe = (cat) => `${clave}:${cat.categoria}`;
+
+  const todasAbiertas =
+    categorias.length > 0 && categorias.every((cat) => abiertas.has(idDe(cat)));
+
+  const alternar = (id) =>
+    setAbiertas((previo) => {
+      const nuevo = new Set(previo);
+      if (nuevo.has(id)) {
+        nuevo.delete(id);
+      } else {
+        nuevo.add(id);
+      }
+      return nuevo;
+    });
+
+  const alternarTodas = () =>
+    setAbiertas((previo) => {
+      const nuevo = new Set(previo);
+      categorias.forEach((cat) => {
+        if (todasAbiertas) {
+          nuevo.delete(idDe(cat));
+        } else {
+          nuevo.add(idDe(cat));
+        }
+      });
+      return nuevo;
+    });
+
+  // Flechas izquierda/derecha para moverse entre pestañas
+  const alTeclear = (e, indice) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    const paso = e.key === "ArrowRight" ? 1 : -1;
+    const siguiente = grupos[(indice + paso + grupos.length) % grupos.length];
+    setActivo(siguiente.clave);
+    document.getElementById(`seguridad-tab-${siguiente.clave}`)?.focus();
+  };
+
+  return (
+    <div>
+      <div className="seguridad-tabs" role="tablist" aria-label="Tipo de seguridad">
+        {grupos.map((g, indice) => (
+          <button
+            key={g.clave}
+            type="button"
+            role="tab"
+            id={`seguridad-tab-${g.clave}`}
+            aria-selected={g.clave === clave}
+            aria-controls={`seguridad-panel-${g.clave}`}
+            tabIndex={g.clave === clave ? 0 : -1}
+            className="seguridad-tab"
+            onClick={() => setActivo(g.clave)}
+            onKeyDown={(e) => alTeclear(e, indice)}
+          >
+            <span className="seguridad-medidas-icono">{g.letra}</span>
+            <span className="seguridad-tab-texto">
+              <strong>{g.datos.titulo}</strong>
+              <small>Categorías de controles</small>
+            </span>
+            <span className="seguridad-tab-contador">
+              {g.datos.categorias?.length ?? 0}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div
+        key={clave}
+        className="seguridad-grupo"
+        role="tabpanel"
+        id={`seguridad-panel-${clave}`}
+        aria-labelledby={`seguridad-tab-${clave}`}
+      >
+        <div className="seguridad-medidas-titulo">
+          <div>
+            <p>{datos.descripcion}</p>
+          </div>
+
+          {categorias.length > 0 && (
+            <button
+              type="button"
+              className="seguridad-accion-todas"
+              onClick={alternarTodas}
+            >
+              {todasAbiertas ? "Contraer todas" : "Expandir todas"}
+            </button>
+          )}
+        </div>
+
+        <div className="seguridad-categorias-grid">
+          {categorias.map((cat, indice) => {
+            const id = idDe(cat);
+            const abierta = abiertas.has(id);
+            const idPanel = `seguridad-${clave}-${indice}`;
+            const nMedidas = cat.medidas?.length ?? 0;
+
+            return (
+              <article
+                key={id}
+                className={`seguridad-categoria-card ${abierta ? "expandido" : ""}`}
+              >
+                <h5 className="seguridad-categoria-titulo">
+                  <button
+                    type="button"
+                    className="seguridad-categoria-cabecera"
+                    aria-expanded={abierta}
+                    aria-controls={idPanel}
+                    onClick={() => alternar(id)}
+                  >
+                    <span className="seguridad-categoria-icono" aria-hidden="true">
+                      {cat.icono}
+                    </span>
+
+                    <span className="seguridad-categoria-nombre">
+                      {cat.categoria}
+                    </span>
+
+                    <span className="seguridad-categoria-meta">
+                      {cat.controlISO && (
+                        <span className="seguridad-control-iso">{cat.controlISO}</span>
+                      )}
+                      <span className="seguridad-categoria-conteo">
+                        {plural(nMedidas, "medida", "medidas")}
+                      </span>
+                    </span>
+
+                    <span className="seguridad-chevron" aria-hidden="true" />
+                  </button>
+                </h5>
+
+                <div className="seguridad-categoria-panel" id={idPanel}>
+                  <div>
+                    <div className="seguridad-categoria-cuerpo">
+                      <ul className="seguridad-lista">
+                        {cat.medidas.map((m) => (
+                          <li key={m}>{m}</li>
+                        ))}
+                      </ul>
+
+                      {cat.riesgosMitigados && (
+                        <p className="seguridad-riesgos-mitigados">
+                          <strong>Mitiga:</strong> {cat.riesgosMitigados.join(", ")}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
