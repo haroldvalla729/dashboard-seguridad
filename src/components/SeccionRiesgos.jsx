@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -33,7 +33,14 @@ const clasePorNivel = {
   Crítico: "critico",
 };
 
-const ordenNivel = { "Bajo": 1, "Medio": 2, "Alto": 3, "Crítico": 4 };
+const clasePorNivelMatriz = {
+  Bajo: "matriz-bajo",
+  Medio: "matriz-medio",
+  Alto: "matriz-alto",
+  Crítico: "matriz-critico",
+};
+
+const ordenNivel = { Bajo: 1, Medio: 2, Alto: 3, Crítico: 4 };
 
 function obtenerColor(variable, respaldo = "#888888") {
   if (typeof window === "undefined") return respaldo;
@@ -45,25 +52,93 @@ function obtenerColor(variable, respaldo = "#888888") {
   );
 }
 
+// Aplica transparencia a un color hexadecimal (para atenuar lo no seleccionado)
+function conAlfa(color, alfa) {
+  const coincidencia = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color);
+  if (!coincidencia) return color;
+
+  let hex = coincidencia[1];
+  if (hex.length === 3) {
+    hex = hex
+      .split("")
+      .map((caracter) => caracter + caracter)
+      .join("");
+  }
+
+  const canal = Math.round(alfa * 255)
+    .toString(16)
+    .padStart(2, "0");
+
+  return `#${hex}${canal}`;
+}
+
+const cantidadTexto = (n) => `${n} riesgo${n === 1 ? "" : "s"}`;
+
 export default function SeccionRiesgos() {
   const [fNivel, setFNivel] = useState("");
   const [fProbabilidad, setFProbabilidad] = useState("");
   const [fImpacto, setFImpacto] = useState("");
   const [buscar, setBuscar] = useState("");
 
-  const filtrados = useMemo(() => {
+  const consultaRef = useRef(null);
+
+  // Los gráficos leen los colores del tema al renderizar:
+  // se vuelve a renderizar cuando cambia entre modo claro y oscuro.
+  const [, forzarTema] = useState(0);
+
+  useEffect(() => {
+    const consulta = window.matchMedia("(prefers-color-scheme: dark)");
+    const alCambiar = () => forzarTema((n) => n + 1);
+
+    consulta.addEventListener("change", alCambiar);
+    return () => consulta.removeEventListener("change", alCambiar);
+  }, []);
+
+  // Activa un valor o lo quita si ya estaba activo
+  const alternar = (setter, valor) =>
+    setter((actual) => (actual === valor ? "" : valor));
+
+  const limpiarFiltros = () => {
+    setFNivel("");
+    setFProbabilidad("");
+    setFImpacto("");
+    setBuscar("");
+  };
+
+  /*
+   * Cada gráfico cuenta los riesgos ignorando su propio filtro. Así, al
+   * seleccionar una barra las demás no se vacían: siguen mostrando cuántos
+   * riesgos habría si se cambiara la selección.
+   */
+  const listas = useMemo(() => {
     const texto = buscar.trim().toLowerCase();
 
-    return riesgos.filter((riesgo) => {
-      const coincideNivel = !fNivel || riesgo["Nivel de Riesgo"] === fNivel;
-      const coincideProbabilidad =
-        !fProbabilidad || riesgo["Probabilidad"] === fProbabilidad;
-      const coincideImpacto =
-        !fImpacto || riesgo["Impacto"] === fImpacto;
+    const aplicar = (omitir = []) =>
+      riesgos.filter((riesgo) => {
+        if (
+          !omitir.includes("nivel") &&
+          fNivel &&
+          riesgo["Nivel de Riesgo"] !== fNivel
+        )
+          return false;
 
-      const coincideBusqueda =
-        !texto ||
-        [
+        if (
+          !omitir.includes("probabilidad") &&
+          fProbabilidad &&
+          riesgo["Probabilidad"] !== fProbabilidad
+        )
+          return false;
+
+        if (
+          !omitir.includes("impacto") &&
+          fImpacto &&
+          riesgo["Impacto"] !== fImpacto
+        )
+          return false;
+
+        if (!texto) return true;
+
+        return [
           riesgo["N°"],
           riesgo["Riesgo"],
           riesgo["Descripción del riesgo"],
@@ -71,18 +146,18 @@ export default function SeccionRiesgos() {
           riesgo["Probabilidad"],
           riesgo["Impacto"],
           riesgo["Nivel de Riesgo"],
-        ].some((valor) =>
-          String(valor ?? "").toLowerCase().includes(texto)
-        );
+        ].some((valor) => String(valor ?? "").toLowerCase().includes(texto));
+      });
 
-      return (
-        coincideNivel &&
-        coincideProbabilidad &&
-        coincideImpacto &&
-        coincideBusqueda
-      );
-    });
+    return {
+      filtrados: aplicar(),
+      paraNivel: aplicar(["nivel"]),
+      paraProbabilidad: aplicar(["probabilidad"]),
+      paraMatriz: aplicar(["probabilidad", "impacto"]),
+    };
   }, [fNivel, fProbabilidad, fImpacto, buscar]);
+
+  const { filtrados } = listas;
 
   const conteo = (nivel, lista = riesgos) =>
     lista.filter((riesgo) => riesgo["Nivel de Riesgo"] === nivel).length;
@@ -90,6 +165,33 @@ export default function SeccionRiesgos() {
   const conteoProbabilidad = (probabilidad, lista = riesgos) =>
     lista.filter((riesgo) => riesgo["Probabilidad"] === probabilidad).length;
 
+  const filtrosActivos = [
+    fNivel && {
+      clave: "nivel",
+      texto: `Nivel: ${fNivel}`,
+      quitar: () => setFNivel(""),
+    },
+    fProbabilidad && {
+      clave: "probabilidad",
+      texto: `Probabilidad: ${fProbabilidad}`,
+      quitar: () => setFProbabilidad(""),
+    },
+    fImpacto && {
+      clave: "impacto",
+      texto: `Impacto: ${fImpacto}`,
+      quitar: () => setFImpacto(""),
+    },
+    buscar.trim() && {
+      clave: "buscar",
+      texto: `Búsqueda: “${buscar.trim()}”`,
+      quitar: () => setBuscar(""),
+    },
+  ].filter(Boolean);
+
+  const verTabla = () =>
+    consultaRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // ---------- Gráficos ----------
   const coloresNivel = {
     Bajo: obtenerColor("--risk-low"),
     Medio: obtenerColor("--risk-medium"),
@@ -97,19 +199,29 @@ export default function SeccionRiesgos() {
     Crítico: obtenerColor("--risk-critical"),
   };
 
-  const coloresProbabilidad = [
-    obtenerColor("--risk-low"),
-    obtenerColor("--risk-medium"),
-    obtenerColor("--risk-high"),
-  ];
+  const coloresProbabilidad = {
+    Baja: obtenerColor("--risk-low"),
+    Media: obtenerColor("--risk-medium"),
+    Alta: obtenerColor("--risk-high"),
+  };
+
+  const colorAcento = obtenerColor("--accent");
 
   const nivelesData = {
     labels: niveles,
     datasets: [
       {
         label: "Cantidad de riesgos",
-        data: niveles.map((nivel) => conteo(nivel, filtrados)),
-        backgroundColor: niveles.map((nivel) => coloresNivel[nivel]),
+        data: niveles.map((nivel) => conteo(nivel, listas.paraNivel)),
+        backgroundColor: niveles.map((nivel) =>
+          fNivel && nivel !== fNivel
+            ? conAlfa(coloresNivel[nivel], 0.3)
+            : coloresNivel[nivel]
+        ),
+        borderColor: niveles.map((nivel) =>
+          nivel === fNivel ? colorAcento : "transparent"
+        ),
+        borderWidth: 2,
         borderRadius: 7,
         borderSkipped: false,
         maxBarThickness: 52,
@@ -123,22 +235,44 @@ export default function SeccionRiesgos() {
       {
         label: "Riesgos por probabilidad",
         data: probabilidades.map((probabilidad) =>
-          conteoProbabilidad(probabilidad, filtrados)
+          conteoProbabilidad(probabilidad, listas.paraProbabilidad)
         ),
-        backgroundColor: coloresProbabilidad,
+        backgroundColor: probabilidades.map((probabilidad) =>
+          fProbabilidad && probabilidad !== fProbabilidad
+            ? conAlfa(coloresProbabilidad[probabilidad], 0.3)
+            : coloresProbabilidad[probabilidad]
+        ),
         borderColor: obtenerColor("--bg"),
         borderWidth: 3,
         hoverOffset: 7,
+        offset: probabilidades.map((probabilidad) =>
+          probabilidad === fProbabilidad ? 12 : 0
+        ),
       },
     ],
+  };
+
+  // Cursor de mano al pasar sobre una barra o segmento
+  const alPasarCursor = (evento, elementos) => {
+    const lienzo = evento.native?.target;
+    if (lienzo) lienzo.style.cursor = elementos.length ? "pointer" : "default";
   };
 
   const opcionesBarras = {
     responsive: true,
     maintainAspectRatio: false,
+    onHover: alPasarCursor,
+    onClick: (_, elementos) => {
+      if (elementos.length) alternar(setFNivel, niveles[elementos[0].index]);
+    },
     plugins: {
       legend: { display: false },
-      tooltip: { enabled: true },
+      tooltip: {
+        callbacks: {
+          label: (contexto) => ` ${cantidadTexto(contexto.parsed.y)}`,
+          footer: () => "Clic para filtrar",
+        },
+      },
     },
     scales: {
       x: {
@@ -159,9 +293,17 @@ export default function SeccionRiesgos() {
     responsive: true,
     maintainAspectRatio: false,
     cutout: "65%",
+    onHover: alPasarCursor,
+    onClick: (_, elementos) => {
+      if (elementos.length)
+        alternar(setFProbabilidad, probabilidades[elementos[0].index]);
+    },
     plugins: {
       legend: {
         position: "bottom",
+        // Clic en la leyenda = filtrar (en lugar de ocultar el segmento)
+        onClick: (_, item) =>
+          alternar(setFProbabilidad, probabilidades[item.index]),
         labels: {
           color: obtenerColor("--text"),
           padding: 18,
@@ -169,64 +311,173 @@ export default function SeccionRiesgos() {
           pointStyle: "circle",
         },
       },
+      tooltip: {
+        callbacks: {
+          label: (contexto) =>
+            ` ${contexto.label}: ${cantidadTexto(contexto.parsed)}`,
+          footer: () => "Clic para filtrar",
+        },
+      },
     },
   };
+
+  // ---------- Tarjetas KPI (también funcionan como filtro) ----------
+  const kpis = [
+    {
+      nivel: null,
+      clase: "kpi-total",
+      titulo: "Total de riesgos",
+      valor: riesgos.length,
+      detalle: "Riesgos identificados",
+    },
+    {
+      nivel: "Crítico",
+      clase: "kpi-critico",
+      titulo: "Críticos",
+      valor: conteo("Crítico"),
+      detalle: "Atención prioritaria",
+    },
+    {
+      nivel: "Alto",
+      clase: "kpi-alto",
+      titulo: "Altos",
+      valor: conteo("Alto"),
+      detalle: "Requieren tratamiento",
+    },
+    {
+      nivel: "Medio",
+      clase: "kpi-medio",
+      titulo: "Medios",
+      valor: conteo("Medio"),
+      detalle: "Requieren seguimiento",
+    },
+  ];
 
   return (
     <section id="riesgos" className="seccion-riesgos">
       <header className="riesgos-header">
-        <span className="riesgos-etiqueta">
-          04 · Evaluación y tratamiento
-        </span>
+        <span className="riesgos-etiqueta">04 · Evaluación y tratamiento</span>
         <h2>Gestión de Riesgos</h2>
         <p>
           Identificación, análisis y evaluación de amenazas que pueden
           afectar los activos de información de la organización.
-          Consulta los riesgos y examina su nivel de exposición.
+          Explora la matriz y los gráficos para examinar su nivel de
+          exposición.
         </p>
       </header>
 
-      {/* KPIs */}
+      {/* KPIs: clic = filtrar por nivel */}
       <div className="riesgos-kpi-grid">
-        <article className="riesgo-kpi kpi-total">
-          <div className="kpi-top">
-            <span className="riesgo-kpi-titulo">Total de riesgos</span>
-            <span className="kpi-punto" aria-hidden="true" />
-          </div>
-          <strong className="riesgo-kpi-numero">{riesgos.length}</strong>
-          <span className="riesgo-kpi-detalle">Riesgos identificados</span>
-        </article>
+        {kpis.map((kpi) => {
+          const esFiltro = kpi.nivel !== null;
+          const seleccionado = esFiltro && fNivel === kpi.nivel;
 
-        <article className="riesgo-kpi kpi-critico">
-          <div className="kpi-top">
-            <span className="riesgo-kpi-titulo">Críticos</span>
-            <span className="kpi-punto" aria-hidden="true" />
-          </div>
-          <strong className="riesgo-kpi-numero">{conteo("Crítico")}</strong>
-          <span className="riesgo-kpi-detalle">Atención prioritaria</span>
-        </article>
+          return (
+            <button
+              type="button"
+              key={kpi.clase}
+              className={`riesgo-kpi ${kpi.clase} es-filtro`}
+              aria-pressed={esFiltro ? seleccionado : undefined}
+              title={
+                esFiltro
+                  ? `Filtrar por nivel ${kpi.nivel}`
+                  : "Quitar todos los filtros"
+              }
+              onClick={() =>
+                esFiltro ? alternar(setFNivel, kpi.nivel) : limpiarFiltros()
+              }
+            >
+              <span className="kpi-top">
+                <span className="riesgo-kpi-titulo">{kpi.titulo}</span>
+                <span className="kpi-punto" aria-hidden="true" />
+              </span>
+              <strong className="riesgo-kpi-numero">{kpi.valor}</strong>
+              <span className="riesgo-kpi-detalle">{kpi.detalle}</span>
+            </button>
+          );
+        })}
+      </div>
 
-        <article className="riesgo-kpi kpi-alto">
-          <div className="kpi-top">
-            <span className="riesgo-kpi-titulo">Altos</span>
-            <span className="kpi-punto" aria-hidden="true" />
-          </div>
-          <strong className="riesgo-kpi-numero">{conteo("Alto")}</strong>
-          <span className="riesgo-kpi-detalle">Requieren tratamiento</span>
-        </article>
+      {/* Panorama: matriz + gráficos, todo interactivo */}
+      <div className="riesgos-bloque">
+        <div className="riesgos-subheader">
+          <h3>Panorama de riesgos</h3>
+          <p>
+            Haz clic en una celda de la matriz, una barra o un segmento del
+            gráfico para filtrar los riesgos de la tabla. Vuelve a hacer
+            clic para quitar la selección.
+          </p>
+        </div>
 
-        <article className="riesgo-kpi kpi-medio">
-          <div className="kpi-top">
-            <span className="riesgo-kpi-titulo">Medios</span>
-            <span className="kpi-punto" aria-hidden="true" />
+        {filtrosActivos.length > 0 && (
+          <div className="riesgos-panorama-barra">
+            <div className="riesgos-chips" aria-label="Filtros activos">
+              {filtrosActivos.map((filtro) => (
+                <button
+                  type="button"
+                  key={filtro.clave}
+                  className="riesgos-chip"
+                  onClick={filtro.quitar}
+                >
+                  {filtro.texto}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className="riesgos-accion"
+              onClick={verTabla}
+            >
+              Ver {filtrados.length} en la tabla
+            </button>
           </div>
-          <strong className="riesgo-kpi-numero">{conteo("Medio")}</strong>
-          <span className="riesgo-kpi-detalle">Requieren seguimiento</span>
-        </article>
+        )}
+
+        <div className="riesgos-panorama">
+          <MatrizRiesgos
+            lista={listas.paraMatriz}
+            fProbabilidad={fProbabilidad}
+            fImpacto={fImpacto}
+            onFila={(probabilidad) => alternar(setFProbabilidad, probabilidad)}
+            onColumna={(impacto) => alternar(setFImpacto, impacto)}
+            onCelda={(probabilidad, impacto) => {
+              const seleccionada =
+                fProbabilidad === probabilidad && fImpacto === impacto;
+
+              setFProbabilidad(seleccionada ? "" : probabilidad);
+              setFImpacto(seleccionada ? "" : impacto);
+            }}
+          />
+
+          <article className="riesgo-grafico-card">
+            <h4>Riesgos por nivel</h4>
+            <div className="riesgo-grafico">
+              <Bar
+                data={nivelesData}
+                options={opcionesBarras}
+                role="img"
+                aria-label="Gráfico de barras de riesgos por nivel. Haz clic en una barra para filtrar."
+              />
+            </div>
+          </article>
+
+          <article className="riesgo-grafico-card">
+            <h4>Riesgos por probabilidad</h4>
+            <div className="riesgo-grafico riesgo-grafico-dona">
+              <Doughnut
+                data={probabilidadesData}
+                options={opcionesDona}
+                role="img"
+                aria-label="Gráfico de dona de riesgos por probabilidad. Haz clic en un segmento para filtrar."
+              />
+            </div>
+          </article>
+        </div>
       </div>
 
       {/* Consulta */}
-      <div className="riesgos-bloque">
+      <div className="riesgos-bloque" ref={consultaRef}>
         <div className="riesgos-subheader">
           <h3>Consultar riesgos</h3>
           <p>
@@ -294,18 +545,13 @@ export default function SeccionRiesgos() {
           <button
             type="button"
             className="riesgos-limpiar"
-            onClick={() => {
-              setFNivel("");
-              setFProbabilidad("");
-              setFImpacto("");
-              setBuscar("");
-            }}
+            onClick={limpiarFiltros}
           >
             Limpiar
           </button>
         </div>
 
-        <div className="riesgos-tabla-info">
+        <div className="riesgos-tabla-info" aria-live="polite">
           <span>
             Mostrando <strong>{filtrados.length}</strong> de{" "}
             <strong>{riesgos.length}</strong> riesgos
@@ -337,12 +583,20 @@ export default function SeccionRiesgos() {
                     <td>{riesgo["Descripción del riesgo"]}</td>
                     <td>{riesgo["Consecuencia"]}</td>
                     <td>
-                      <span className={`riesgo-chip chip-prob-${riesgo["Probabilidad"].toLowerCase()}`}>
+                      <span
+                        className={`riesgo-chip chip-prob-${riesgo[
+                          "Probabilidad"
+                        ].toLowerCase()}`}
+                      >
                         {riesgo["Probabilidad"]}
                       </span>
                     </td>
                     <td>
-                      <span className={`riesgo-chip chip-imp-${riesgo["Impacto"].toLowerCase()}`}>
+                      <span
+                        className={`riesgo-chip chip-imp-${riesgo[
+                          "Impacto"
+                        ].toLowerCase()}`}
+                      >
                         {riesgo["Impacto"]}
                       </span>
                     </td>
@@ -366,54 +620,19 @@ export default function SeccionRiesgos() {
           </table>
         </div>
       </div>
-
-      {/* Matriz */}
-      <div className="riesgos-bloque">
-        <div className="riesgos-subheader">
-          <h3>Matriz de riesgos</h3>
-          <p>
-            Distribución de los riesgos según las categorías de
-            probabilidad e impacto registradas.
-          </p>
-        </div>
-
-        <MatrizRiesgos />
-      </div>
-
-      {/* Gráficos */}
-      <div className="riesgos-bloque">
-        <div className="riesgos-subheader">
-          <h3>Resumen estadístico</h3>
-          <p>Los gráficos se actualizan según los filtros aplicados.</p>
-        </div>
-
-        <div className="riesgos-graficos">
-          <article className="riesgo-grafico-card">
-            <h4>Riesgos por nivel</h4>
-            <div className="riesgo-grafico">
-              <Bar data={nivelesData} options={opcionesBarras} />
-            </div>
-          </article>
-
-          <article className="riesgo-grafico-card">
-            <h4>Riesgos por probabilidad</h4>
-            <div className="riesgo-grafico riesgo-grafico-dona">
-              <Doughnut data={probabilidadesData} options={opcionesDona} />
-            </div>
-          </article>
-        </div>
-      </div>
     </section>
   );
 }
 
-function MatrizRiesgos() {
-  const clasePorNivelMatriz = {
-    Bajo: "matriz-bajo",
-    Medio: "matriz-medio",
-    Alto: "matriz-alto",
-    Crítico: "matriz-critico",
-  };
+function MatrizRiesgos({
+  lista,
+  fProbabilidad,
+  fImpacto,
+  onFila,
+  onColumna,
+  onCelda,
+}) {
+  const hayCeldaActiva = Boolean(fProbabilidad || fImpacto);
 
   return (
     <div className="riesgos-matriz-contenedor">
@@ -423,32 +642,42 @@ function MatrizRiesgos() {
           <span className="matriz-eje-x">Impacto</span>
         </div>
 
+        {/* Encabezados de columna: clic = filtrar por impacto */}
         {impactos.map((impacto) => (
-          <div
+          <button
+            type="button"
             key={`impacto-${impacto}`}
             className="matriz-celda matriz-encabezado"
+            aria-pressed={fImpacto === impacto}
+            title={`Filtrar por impacto ${impacto}`}
+            onClick={() => onColumna(impacto)}
           >
             {impacto}
-          </div>
+          </button>
         ))}
 
         {probabilidades.map((probabilidad) => (
           <Fragment key={probabilidad}>
-            <div className="matriz-celda matriz-encabezado matriz-encabezado-fila">
+            {/* Encabezado de fila: clic = filtrar por probabilidad */}
+            <button
+              type="button"
+              className="matriz-celda matriz-encabezado matriz-encabezado-fila"
+              aria-pressed={fProbabilidad === probabilidad}
+              title={`Filtrar por probabilidad ${probabilidad}`}
+              onClick={() => onFila(probabilidad)}
+            >
               {probabilidad}
-            </div>
+            </button>
 
             {impactos.map((impacto) => {
-              const riesgosCelda = riesgos.filter(
+              const riesgosCelda = lista.filter(
                 (riesgo) =>
                   riesgo["Probabilidad"] === probabilidad &&
                   riesgo["Impacto"] === impacto
               );
 
               const nivelesPresentes = [
-                ...new Set(
-                  riesgosCelda.map((r) => r["Nivel de Riesgo"])
-                ),
+                ...new Set(riesgosCelda.map((r) => r["Nivel de Riesgo"])),
               ].sort((a, b) => ordenNivel[b] - ordenNivel[a]);
 
               const nivelPrincipal = nivelesPresentes[0] ?? null;
@@ -456,26 +685,62 @@ function MatrizRiesgos() {
                 ? clasePorNivelMatriz[nivelPrincipal]
                 : "matriz-vacia";
 
+              const seleccionada =
+                fProbabilidad === probabilidad && fImpacto === impacto;
+
+              const atenuada =
+                hayCeldaActiva &&
+                ((fProbabilidad && fProbabilidad !== probabilidad) ||
+                  (fImpacto && fImpacto !== impacto));
+
               return (
-                <div
+                <button
+                  type="button"
                   key={`${probabilidad}-${impacto}`}
-                  className={`matriz-celda matriz-dato ${claseNivel}`}
-                  title={
-                    `Probabilidad: ${probabilidad}; ` +
-                    `impacto: ${impacto}; ` +
-                    `riesgos: ${riesgosCelda.length}; ` +
-                    `niveles: ${nivelesPresentes.join(", ") || "Sin registros"}`
+                  className={`matriz-celda matriz-dato ${claseNivel} ${
+                    atenuada ? "matriz-atenuada" : ""
+                  }`}
+                  disabled={riesgosCelda.length === 0}
+                  aria-pressed={seleccionada}
+                  aria-label={
+                    `Probabilidad ${probabilidad}, impacto ${impacto}: ` +
+                    `${cantidadTexto(riesgosCelda.length)}`
                   }
+                  onClick={() => onCelda(probabilidad, impacto)}
                 >
                   <strong className="matriz-numero">
                     {riesgosCelda.length || "—"}
                   </strong>
+
                   {nivelesPresentes.length > 0 && (
                     <span className="matriz-etiqueta">
                       {nivelesPresentes.join(" / ")}
                     </span>
                   )}
-                </div>
+
+                  {/* Detalle al pasar el cursor o enfocar con teclado */}
+                  {riesgosCelda.length > 0 && (
+                    <span className="matriz-detalle" role="tooltip">
+                      <strong>
+                        {cantidadTexto(riesgosCelda.length)} · clic para
+                        filtrar
+                      </strong>
+                      {riesgosCelda.slice(0, 4).map((riesgo) => (
+                        <span
+                          key={riesgo["N°"]}
+                          className="matriz-detalle-item"
+                        >
+                          #{riesgo["N°"]} {riesgo["Riesgo"]}
+                        </span>
+                      ))}
+                      {riesgosCelda.length > 4 && (
+                        <span className="matriz-detalle-item">
+                          y {riesgosCelda.length - 4} más…
+                        </span>
+                      )}
+                    </span>
+                  )}
+                </button>
               );
             })}
           </Fragment>
@@ -494,9 +759,9 @@ function MatrizRiesgos() {
       </div>
 
       <p className="matriz-nota">
-        Cada celda muestra la cantidad de riesgos que coinciden con la
-        probabilidad y el impacto indicados. Si una combinación contiene
-        distintos niveles, se muestran todos.
+        Cada celda muestra la cantidad de riesgos con esa probabilidad e
+        impacto; si hay distintos niveles, se muestran todos. Los conteos
+        respetan el nivel y la búsqueda aplicados.
       </p>
     </div>
   );

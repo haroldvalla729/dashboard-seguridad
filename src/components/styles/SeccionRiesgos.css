@@ -1,78 +1,158 @@
 /* ============================================================
-   Sección Riesgos — layout general
+   SECCIÓN RIESGOS · mismo lenguaje visual que SECCIÓN EMPRESA
+   (mismos nombres de clase que la versión anterior)
    ============================================================ */
+
 .seccion-riesgos {
+  --rk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
   width: 100%;
   padding: 32px;
   box-sizing: border-box;
   text-align: left;
   scroll-margin-top: 85px;
+  color: var(--text);
+}
+
+.seccion-riesgos h2,
+.seccion-riesgos h3,
+.seccion-riesgos h4 {
+  color: var(--text-h);
+}
+
+.seccion-riesgos p {
+  line-height: 1.65;
+}
+
+/* Foco visible consistente para todo lo interactivo */
+.seccion-riesgos :is(button, input, select):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Animaciones
+   (fill-mode "backwards": al terminar, el hover puede
+   volver a mover los elementos)
+   ============================================================ */
+@keyframes riesgos-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes riesgos-pulso {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--risk-critical-bg);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.riesgos-header,
+.seccion-riesgos .riesgo-kpi,
+.riesgos-matriz-contenedor,
+.seccion-riesgos .riesgo-grafico-card,
+.riesgos-filtros,
+.riesgos-tabla-contenedor {
+  animation: riesgos-aparecer 0.5s var(--rk-ease) backwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Escalonado sin necesidad de tocar el JSX */
+.riesgos-kpi-grid > :nth-child(2) { --i: 1; }
+.riesgos-kpi-grid > :nth-child(3) { --i: 2; }
+.riesgos-kpi-grid > :nth-child(4) { --i: 3; }
+.riesgos-graficos > :nth-child(2) { --i: 1; }
+
+/* Aparición al hacer scroll (mejora progresiva) */
+@supports (animation-timeline: view()) {
+  .riesgos-bloque .riesgos-matriz-contenedor,
+  .seccion-riesgos .riesgo-grafico-card,
+  .riesgos-tabla-contenedor {
+    animation: riesgos-aparecer linear backwards;
+    animation-delay: 0s;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
 }
 
 /* ============================================================
    Header
    ============================================================ */
 .riesgos-header {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .riesgos-etiqueta {
-  display: inline-block;
+  display: block;
   margin-bottom: 10px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--accent-bg);
   color: var(--accent);
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
 }
 
 .riesgos-header h2 {
-  margin: 0 0 10px;
-  font-size: 28px;
-  line-height: 1.2;
+  margin: 0 0 12px;
 }
 
 .riesgos-header > p {
   max-width: 760px;
   margin: 0;
   color: var(--text);
-  font-size: 15px;
-  line-height: 1.7;
 }
 
 /* ============================================================
-   KPIs
+   KPIs (mismo patrón que las tarjetas de resumen de Empresa)
    ============================================================ */
 .riesgos-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: 14px;
 }
 
 .seccion-riesgos .riesgo-kpi {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
-  padding: 20px 20px 20px 24px;
+  padding: 20px 18px 18px;
   box-sizing: border-box;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--bg);
-  box-shadow: var(--shadow);
-  overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--rk-ease);
 }
 
+.seccion-riesgos .riesgo-kpi:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+/* Franja superior según el nivel (igual que las tarjetas de activos) */
 .seccion-riesgos .riesgo-kpi::before {
   content: "";
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 4px;
+  inset: 0 18px auto 18px;
+  width: auto;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
   background: var(--border);
+  pointer-events: none;
 }
 
 .riesgo-kpi.kpi-critico::before { background: var(--risk-critical); }
@@ -94,24 +174,32 @@
   background: var(--border);
 }
 
-.riesgo-kpi.kpi-critico .kpi-punto { background: var(--risk-critical); }
-.riesgo-kpi.kpi-alto .kpi-punto    { background: var(--risk-high); }
-.riesgo-kpi.kpi-medio .kpi-punto   { background: var(--risk-medium); }
-.riesgo-kpi.kpi-total .kpi-punto   { background: var(--accent); }
+.riesgo-kpi.kpi-critico .kpi-punto {
+  background: var(--risk-critical);
+  animation: riesgos-pulso 2.4s ease-in-out infinite;
+}
+.riesgo-kpi.kpi-alto .kpi-punto  { background: var(--risk-high); }
+.riesgo-kpi.kpi-medio .kpi-punto { background: var(--risk-medium); }
+.riesgo-kpi.kpi-total .kpi-punto { background: var(--accent); }
 
 .riesgo-kpi-titulo {
   color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .riesgo-kpi-numero {
   color: var(--text-h);
-  font-size: 34px;
+  font-size: 1.8rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  transition: transform 200ms var(--rk-ease), color 200ms ease;
+}
+
+.riesgo-kpi:hover .riesgo-kpi-numero {
+  transform: scale(1.1);
+  transform-origin: left center;
 }
 
 .riesgo-kpi.kpi-critico .riesgo-kpi-numero { color: var(--risk-critical); }
@@ -120,7 +208,7 @@
 
 .riesgo-kpi-detalle {
   color: var(--text);
-  font-size: 12px;
+  font-size: 0.76rem;
   line-height: 1.5;
 }
 
@@ -132,25 +220,25 @@
 }
 
 .riesgos-subheader {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .riesgos-subheader h3 {
-  margin: 0 0 6px;
-  color: var(--text-h);
-  font-size: 20px;
+  margin: 0 0 8px;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
 .riesgos-subheader p {
+  max-width: 650px;
   margin: 0;
   color: var(--text);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 0.88rem;
+  line-height: 1.7;
 }
 
 /* ============================================================
-   Filtros
+   Filtros (sin caja gris: igual que los filtros de Empresa)
    ============================================================ */
 .riesgos-filtros {
   display: grid;
@@ -162,10 +250,9 @@
     auto;
   align-items: end;
   gap: 14px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--code-bg);
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .riesgos-filtros label {
@@ -177,10 +264,8 @@
 
 .riesgos-filtros label > span {
   color: var(--text-h);
-  font-size: 12px;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
 }
 
 .riesgos-filtros select,
@@ -191,17 +276,27 @@
   padding: 10px 12px;
   box-sizing: border-box;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 9px;
   background: var(--bg);
   color: var(--text-h);
-  font: 14px/1.4 var(--sans);
+  font: inherit;
+  font-size: 0.83rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
-.riesgos-filtros select:focus-visible,
-.riesgos-filtros input:focus-visible,
-.riesgos-limpiar:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+.riesgos-filtros select {
+  cursor: pointer;
+}
+
+.riesgos-filtros select:hover,
+.riesgos-filtros input:hover {
+  border-color: var(--accent-border);
+}
+
+.riesgos-filtros select:focus,
+.riesgos-filtros input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
 }
 
 .riesgos-filtros input::placeholder {
@@ -209,24 +304,32 @@
   opacity: 0.7;
 }
 
+/* Botón "Limpiar": mismo estilo que los botones de acción de Empresa */
 .riesgos-limpiar {
   min-height: 42px;
-  padding: 10px 18px;
+  padding: 10px 16px;
   border: 1px solid var(--accent-border);
-  border-radius: 8px;
+  border-radius: 9px;
   background: var(--accent-bg);
   color: var(--text-h);
-  font: 600 13px/1.4 var(--sans);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 180ms ease, transform 180ms ease;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms var(--rk-ease);
 }
 
 .riesgos-limpiar:hover {
-  background: var(--accent-border);
+  border-color: var(--accent);
+  background: var(--code-bg);
+  transform: translateY(-2px);
 }
 
 .riesgos-limpiar:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
 /* ============================================================
@@ -234,10 +337,10 @@
    ============================================================ */
 .riesgos-tabla-info {
   display: flex;
-  justify-content: flex-end;
-  margin: 18px 0 10px;
+  justify-content: flex-start;
+  margin: 16px 0 14px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 0.8rem;
 }
 
 .riesgos-tabla-info strong {
@@ -248,8 +351,14 @@
   width: 100%;
   overflow-x: auto;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--bg);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.riesgos-tabla-contenedor:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow);
 }
 
 .riesgos-tabla {
@@ -257,7 +366,7 @@
   min-width: 900px;
   border-collapse: collapse;
   text-align: left;
-  font-size: 13px;
+  font-size: 0.82rem;
 }
 
 .riesgos-tabla th,
@@ -272,14 +381,14 @@
 .riesgos-tabla thead th {
   position: sticky;
   top: 0;
+  z-index: 1;
   background: var(--code-bg);
   color: var(--text-h);
+  font-size: 0.75rem;
   font-weight: 600;
-  font-size: 12px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   white-space: nowrap;
-  z-index: 1;
 }
 
 .riesgos-tabla td {
@@ -287,15 +396,17 @@
 }
 
 .riesgos-tabla tbody tr {
-  transition: background-color 160ms ease;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
 }
 
 .riesgos-tabla tbody tr:nth-child(even) {
   background: color-mix(in srgb, var(--code-bg) 40%, transparent);
 }
 
+/* Barra de acento a la izquierda de la fila en hover */
 .riesgos-tabla tbody tr:hover {
   background: var(--accent-bg);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 
 .riesgos-tabla tbody tr:last-child td {
@@ -305,6 +416,7 @@
 .riesgos-tabla .riesgo-id {
   color: var(--text-h);
   font-family: var(--mono);
+  font-size: 0.78rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -318,12 +430,12 @@
 .riesgo-chip {
   display: inline-flex;
   align-items: center;
-  padding: 3px 9px;
-  border-radius: 999px;
+  padding: 4px 10px;
   border: 1px solid var(--border);
+  border-radius: 999px;
   background: var(--code-bg);
   color: var(--text-h);
-  font-size: 11px;
+  font-size: 0.72rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -348,17 +460,16 @@
   background: var(--risk-low-bg);
 }
 
-/* Badge de nivel */
+/* Badge de nivel: píldora, igual que las etiquetas de criticidad de Empresa */
 .riesgo-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border: 1px solid var(--border);
-  border-radius: 7px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -384,6 +495,7 @@
   color: var(--risk-critical);
   background: var(--risk-critical-bg);
   border-color: var(--risk-critical);
+  animation: riesgos-pulso 2.4s ease-in-out infinite;
 }
 
 .riesgos-vacio {
@@ -396,10 +508,15 @@
    Matriz de riesgos
    ============================================================ */
 .riesgos-matriz-contenedor {
-  padding: 24px;
+  padding: 26px;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--bg);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.riesgos-matriz-contenedor:hover {
+  border-color: var(--accent-border);
   box-shadow: var(--shadow);
 }
 
@@ -423,8 +540,8 @@
   padding: 10px;
   box-sizing: border-box;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 11px;
+  font-size: 0.88rem;
   font-weight: 600;
   text-align: center;
 }
@@ -434,7 +551,7 @@
   border-color: transparent;
   background: var(--code-bg);
   color: var(--text-h);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.4px;
   text-transform: uppercase;
@@ -445,11 +562,11 @@
   min-height: 40px;
   border-color: transparent;
   background: var(--code-bg);
-  font-size: 10px;
+  color: var(--text);
+  font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.4px;
   text-transform: uppercase;
-  color: var(--text);
 }
 
 .matriz-eje-y,
@@ -474,22 +591,26 @@
 }
 
 .matriz-dato {
-  transition: transform 160ms ease, box-shadow 160ms ease;
+  cursor: default;
+  transition:
+    transform 180ms var(--rk-ease),
+    box-shadow 180ms ease;
 }
 
 .matriz-dato:hover {
-  transform: translateY(-1px);
+  transform: translateY(-3px) scale(1.03);
   box-shadow: var(--shadow);
 }
 
 .matriz-numero {
-  font-size: 22px;
+  font-size: 1.4rem;
   font-weight: 700;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .matriz-etiqueta {
-  font-size: 10px;
+  font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.3px;
   text-transform: uppercase;
@@ -540,7 +661,7 @@
   align-items: center;
   gap: 7px;
   color: var(--text);
-  font-size: 12px;
+  font-size: 0.78rem;
 }
 
 .matriz-punto {
@@ -555,10 +676,10 @@
 .matriz-punto-critico { background: var(--risk-critical); }
 
 .matriz-nota {
-  margin: 18px auto 0;
   max-width: 620px;
+  margin: 18px auto 0;
   color: var(--text);
-  font-size: 12px;
+  font-size: 0.78rem;
   line-height: 1.6;
   text-align: center;
 }
@@ -578,13 +699,21 @@
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--bg);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--rk-ease);
+}
+
+.seccion-riesgos .riesgo-grafico-card:hover {
+  border-color: var(--accent-border);
   box-shadow: var(--shadow);
+  transform: translateY(-3px);
 }
 
 .riesgo-grafico-card h4 {
   margin: 0 0 20px;
-  color: var(--text-h);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -600,9 +729,265 @@
 }
 
 /* ============================================================
-   Responsive
+   Interactividad: KPIs, panorama (matriz + gráficos), chips
    ============================================================ */
-@media (max-width: 1050px) {
+
+/* Los bloques quedan bien posicionados al usar "Ver en la tabla" */
+.riesgos-bloque {
+  scroll-margin-top: 85px;
+}
+
+/* ---- KPIs como botones de filtro ---- */
+.seccion-riesgos button.riesgo-kpi {
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+}
+
+.seccion-riesgos .riesgo-kpi.es-filtro:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.seccion-riesgos .riesgo-kpi.es-filtro[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* ---- Barra de filtros aplicados sobre el panorama ---- */
+.riesgos-panorama-barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.riesgos-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.riesgos-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px 5px 12px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  animation: riesgos-aparecer 0.25s var(--rk-ease) backwards;
+  transition: background 160ms ease, transform 160ms var(--rk-ease);
+}
+
+.riesgos-chip:hover {
+  background: var(--code-bg);
+  transform: translateY(-1px);
+}
+
+.riesgos-chip::after {
+  content: "✕";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--border);
+  font-size: 0.62rem;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.riesgos-chip:hover::after {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.riesgos-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--accent-border);
+  border-radius: 9px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms var(--rk-ease);
+}
+
+.riesgos-accion::after {
+  content: "↓";
+  transition: transform 160ms var(--rk-ease);
+}
+
+.riesgos-accion:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.riesgos-accion:hover::after {
+  transform: translateY(3px);
+}
+
+/* ---- Panorama: matriz a la izquierda, gráficos a la derecha ---- */
+.riesgos-panorama {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.riesgos-panorama > .riesgos-matriz-contenedor {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.riesgos-panorama > .riesgo-grafico-card {
+  grid-column: 2;
+}
+
+.riesgos-panorama .riesgo-grafico {
+  height: 230px;
+}
+
+.riesgos-panorama .riesgo-grafico-card h4 {
+  margin-bottom: 14px;
+}
+
+/* ---- Matriz: encabezados y celdas como botones ---- */
+button.matriz-celda {
+  position: relative;
+  align-self: stretch;
+  justify-self: stretch;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+}
+
+button.matriz-encabezado {
+  color: var(--text-h);
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+button.matriz-encabezado:hover {
+  background: var(--accent-bg);
+}
+
+button.matriz-encabezado[aria-pressed="true"] {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.matriz-dato[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.matriz-dato.matriz-atenuada {
+  opacity: 0.45;
+}
+
+.matriz-dato.matriz-atenuada:not(:disabled):hover {
+  opacity: 1;
+}
+
+.matriz-dato:disabled {
+  cursor: default;
+}
+
+.matriz-dato:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.matriz-dato:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* ---- Detalle flotante de cada celda ---- */
+.matriz-detalle {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 5;
+  display: grid;
+  gap: 4px;
+  width: max-content;
+  max-width: 240px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-align: left;
+  text-transform: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms var(--rk-ease),
+    visibility 0s linear 160ms;
+}
+
+.matriz-dato:hover .matriz-detalle,
+.matriz-dato:focus-visible .matriz-detalle {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+
+.matriz-detalle strong {
+  color: var(--text-h);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.matriz-detalle-item {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+/* Sin hover (táctil) el detalle no se muestra */
+@media (hover: none) {
+  .matriz-detalle {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Responsive (mismos puntos de corte que Empresa)
+   ============================================================ */
+@media (max-width: 1100px) {
   .riesgos-filtros {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -613,23 +998,40 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .riesgos-kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .riesgos-graficos {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Panorama en una sola columna: matriz y luego gráficos */
+  .riesgos-panorama {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .riesgos-panorama > .riesgos-matriz-contenedor,
+  .riesgos-panorama > .riesgo-grafico-card {
+    grid-column: 1;
+    grid-row: auto;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .seccion-riesgos {
-    padding: 24px 16px;
+    padding: 20px 16px;
   }
 
-  .riesgos-header h2 {
-    font-size: 22px;
+  /* El contenedor de la matriz hace scroll horizontal: se oculta el detalle flotante */
+  .matriz-detalle {
+    display: none;
+  }
+
+  .riesgos-panorama-barra {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .seccion-riesgos .riesgo-kpi,
@@ -637,21 +1039,16 @@
     padding: 16px;
   }
 
-  .seccion-riesgos .riesgo-kpi {
-    padding-left: 20px;
-  }
-
   .riesgos-kpi-grid {
     gap: 10px;
   }
 
   .riesgo-kpi-numero {
-    font-size: 26px;
+    font-size: 1.5rem;
   }
 
   .riesgos-filtros {
-    grid-template-columns: 1fr;
-    padding: 16px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .riesgos-limpiar {
@@ -673,17 +1070,17 @@
   .matriz-celda {
     min-height: 60px;
     padding: 6px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .matriz-numero {
-    font-size: 18px;
+    font-size: 1.1rem;
   }
 
   .matriz-encabezado,
   .matriz-esquina {
     min-height: 34px;
-    font-size: 10px;
+    font-size: 0.62rem;
   }
 
   .matriz-eje-y,
@@ -701,13 +1098,29 @@
   }
 }
 
+@media (max-width: 480px) {
+  .riesgos-kpi-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Pantallas táctiles: sin saltos por hover */
+@media (hover: none) {
+  .seccion-riesgos .riesgo-kpi:hover,
+  .seccion-riesgos .riesgo-grafico-card:hover,
+  .matriz-dato:hover {
+    transform: none;
+  }
+}
+
 /* ============================================================
-   Accesibilidad
+   Accesibilidad: movimiento reducido
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .riesgos-limpiar,
-  .riesgos-tabla tbody tr,
-  .matriz-dato {
-    transition: none;
+  .seccion-riesgos *,
+  .seccion-riesgos *::before,
+  .seccion-riesgos *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }
