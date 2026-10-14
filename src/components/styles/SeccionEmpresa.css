@@ -6,18 +6,12 @@
 ======================================== */
 
 .seccion-empresa {
-  /* Colores de riesgo con valores de respaldo */
-  --emp-critica: var(--risk-critical, #dc2626);
-  --emp-critica-bg: var(--risk-critical-bg, rgba(220, 38, 38, 0.12));
-  --emp-alta: var(--risk-high, #ea580c);
-  --emp-alta-bg: var(--risk-high-bg, rgba(234, 88, 12, 0.12));
-  --emp-media: var(--risk-medium, #ca8a04);
-  --emp-media-bg: var(--risk-medium-bg, rgba(202, 138, 4, 0.14));
-  --emp-baja: #16a34a;
-  --emp-baja-bg: rgba(22, 163, 74, 0.12);
   --emp-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
+  width: 100%;
   padding: 32px;
+  box-sizing: border-box;
+  text-align: left;
   scroll-margin-top: 85px;
   color: var(--text);
 }
@@ -58,7 +52,7 @@
 @keyframes empresa-pulso {
   0%,
   100% {
-    box-shadow: 0 0 0 0 var(--emp-critica-bg);
+    box-shadow: 0 0 0 0 var(--risk-critical-bg);
   }
   50% {
     box-shadow: 0 0 0 6px transparent;
@@ -109,6 +103,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 1.2px;
+  text-transform: uppercase;
   text-align: left;
 }
 
@@ -692,7 +687,7 @@
 .empresa-accion.activa {
   border-color: var(--accent);
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
 }
 
 .empresa-accion.activa::after {
@@ -717,27 +712,32 @@
   font-size: 0.72rem;
   font-weight: 600;
   white-space: nowrap;
+  border: 1px solid var(--border);
 }
 
 .empresa-criticidad-critica {
-  color: var(--emp-critica);
-  background: var(--emp-critica-bg);
+  border-color: var(--risk-critical);
+  color: var(--risk-critical);
+  background: var(--risk-critical-bg);
   animation: empresa-pulso 2.4s ease-in-out infinite;
 }
 
 .empresa-criticidad-alta {
-  color: var(--emp-alta);
-  background: var(--emp-alta-bg);
+  border-color: var(--risk-high);
+  color: var(--risk-high);
+  background: var(--risk-high-bg);
 }
 
 .empresa-criticidad-media {
-  color: var(--emp-media);
-  background: var(--emp-media-bg);
+  border-color: var(--risk-medium);
+  color: var(--risk-medium);
+  background: var(--risk-medium-bg);
 }
 
 .empresa-criticidad-baja {
-  color: var(--emp-baja);
-  background: var(--emp-baja-bg);
+  border-color: var(--risk-low);
+  color: var(--risk-low);
+  background: var(--risk-low-bg);
 }
 
 .empresa-criticidad-sin-dato {
@@ -767,15 +767,15 @@
 }
 
 .empresa-activo:has(.empresa-riesgo-critico)::before {
-  background: var(--emp-critica);
+  background: var(--risk-critical);
 }
 
 .empresa-activo:has(.empresa-riesgo-alto)::before {
-  background: var(--emp-alta);
+  background: var(--risk-high);
 }
 
 .empresa-activo:has(.empresa-riesgo-moderado)::before {
-  background: var(--emp-media);
+  background: var(--risk-medium);
 }
 
 .empresa-activo-riesgo {
@@ -804,18 +804,18 @@
 }
 
 .empresa-riesgo-critico {
-  border-left-color: var(--emp-critica);
-  background: var(--emp-critica-bg);
+  border-left-color: var(--risk-critical);
+  background: var(--risk-critical-bg);
 }
 
 .empresa-riesgo-alto {
-  border-left-color: var(--emp-alta);
-  background: var(--emp-alta-bg);
+  border-left-color: var(--risk-high);
+  background: var(--risk-high-bg);
 }
 
 .empresa-riesgo-moderado {
-  border-left-color: var(--emp-media);
-  background: var(--emp-media-bg);
+  border-left-color: var(--risk-medium);
+  background: var(--risk-medium-bg);
 }
 
 .empresa-riesgo-sin-dato {
@@ -1030,7 +1030,7 @@
 
 .empresa-chip:hover::after {
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
 }
 
 .empresa-resultados {
