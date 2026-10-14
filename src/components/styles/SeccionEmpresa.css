@@ -5,6 +5,47 @@
      colapsadas por defecto y expandibles
 ======================================== */
 
+.empresa-informacion {
+  margin: 0 0 50px 0;
+  padding: 0 50px 0 0;
+}
+
+.empresa-informacion-header h3 {
+  color: var(--primary);
+  margin: 6px 0 6px;
+}
+
+.empresa-informacion-header p {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-bottom: 16px;
+}
+
+.empresa-informacion-lista {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.empresa-informacion-lista li {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--accent-bg);
+  border-radius: 10px;
+  border-left: 3px solid var(--accent);
+  font-size: .9rem;
+  color: var(--text);
+  animation: fade-in .4s ease both;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+.empresa-informacion-icono {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
 .seccion-empresa {
   --emp-ease: cubic-bezier(0.22, 1, 0.36, 1);
 

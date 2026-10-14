@@ -56,6 +56,16 @@ export default function SeccionSeguridad() {
 
               <div className="seguridad-cia-meta">
                 <span><strong>Controles:</strong> {c.controlesAplicados.join(", ")}</span>
+                {c.activosRelacionados?.length > 0 && (
+                  <div className="seguridad-cia-activos">
+                    <strong>Activos protegidos:</strong>
+                    <div className="seguridad-cia-activos-chips">
+                      {c.activosRelacionados.map((a) => (
+                        <span key={a} className="seguridad-chip-activo">{a}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <span><strong>Riesgos:</strong> {c.riesgosAsociados.join(", ")}</span>
                 <span><strong>Indicador:</strong> {c.indicadorExito}</span>
               </div>
@@ -80,6 +90,13 @@ export default function SeccionSeguridad() {
           ))}
         </div>
 
+        <div className="seguridad-criterios">
+          <span><strong>Criterios evaluados:</strong></span>
+          {clasificacionInformacion.criteriosEvaluacion.map((c) => (
+            <span key={c} className="seguridad-criterio-chip">{c}</span>
+          ))}
+        </div>
+
         <div className="seguridad-tabla-contenedor">
           <table className="seguridad-tabla">
             <thead>
@@ -89,7 +106,9 @@ export default function SeccionSeguridad() {
                 <th>Tipo</th>
                 <th>Clasificación</th>
                 <th>C / I / D</th>
+                <th>Ubicación</th>
                 <th>Propietario</th>
+                <th>Controles clave</th>
                 <th>Riesgos</th>
               </tr>
             </thead>
@@ -104,17 +123,23 @@ export default function SeccionSeguridad() {
                   </td>
                   <td>{a.tipo}</td>
                   <td>
-                    <span
-                      className={`seguridad-badge seguridad-nivel-${a.clasificacion
-                        .toLowerCase()
-                        .normalize("NFD")
-                        .replace(/[̀-ͯ]/g, "")}`}
-                    >
+                    <span className={`seguridad-badge seguridad-nivel-${a.clasificacion
+                      .toLowerCase()
+                      .normalize("NFD")
+                      .replace(/[\u0300-\u036f]/g, "")}`}>
                       {a.clasificacion}
                     </span>
                   </td>
                   <td>{a.c} / {a.i} / {a.d}</td>
+                  <td><small>{a.ubicacion}</small></td>
                   <td>{a.propietario}</td>
+                  <td>
+                    <div className="seguridad-controles-chips">
+                      {a.controlesClave?.map((c) => (
+                        <span key={c} className="seguridad-chip-control">{c}</span>
+                      ))}
+                    </div>
+                  </td>
                   <td>{a.riesgosAsociados?.join(", ")}</td>
                 </tr>
               ))}

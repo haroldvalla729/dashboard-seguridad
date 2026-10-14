@@ -1124,3 +1124,12 @@ button.matriz-encabezado[aria-pressed="true"] {
     transition: none !important;
   }
 }
+
+.riesgo-categoria {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+}
+

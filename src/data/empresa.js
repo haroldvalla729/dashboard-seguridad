@@ -58,6 +58,7 @@ export const empresa = {
       "voluntario": [
         "ISO/IEC 27001:2022",
         "ISO/IEC 27002:2022",
+        "ISO/IEC 27005:2022",
         "ISO 22301:2019"
       ]
     },

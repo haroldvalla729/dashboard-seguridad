@@ -892,3 +892,45 @@
     transition: none !important;
   }
 }
+
+.seguridad-criterios {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.seguridad-criterio-chip {
+  background: var(--primary);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.seguridad-cia-activos {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  font-size: .78rem;
+}
+
+.seguridad-cia-activos-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.seguridad-chip-activo {
+  background: #f0f6fc;
+  color: var(--primary);
+  font-size: .7rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}

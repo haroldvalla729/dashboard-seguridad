@@ -75,8 +75,8 @@ export const controlesISO = {
 
   controlesAplicados: {
     titulo: "Controles aplicados por riesgo en CODEXA",
-    descripcion: "Selección de 12 controles de los 93 disponibles, todos justificables por un riesgo concreto identificado. Esta trazabilidad entre riesgo y control es lo que un auditor verifica en la Declaración de Aplicabilidad.",
-    totalSeleccionados: 12,
+    descripcion: "Selección de 15 controles de los 93 disponibles, todos justificables por un riesgo concreto identificado. Esta trazabilidad entre riesgo y control es lo que un auditor verifica en la Declaración de Aplicabilidad.",
+    totalSeleccionados: 15,
     detalle: [
       {
         riesgo: "R-01 Robo o exfiltración de información por acceso no autorizado",

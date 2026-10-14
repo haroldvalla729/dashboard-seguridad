@@ -290,6 +290,29 @@ export default function SeccionEmpresa() {
           )}
         </aside>
       </div>
+      {datos.informacion_que_gestiona?.length > 0 && (
+        <div className="empresa-informacion card" style={{ "--i": 2 }}>
+          <div className="empresa-informacion-header">
+            <span className="empresa-etiqueta">DATOS Y DOCUMENTOS</span>
+            <h3>Información que gestiona CODEXA</h3>
+            <p>
+              Activos intangibles que circulan por los procesos de la empresa y que
+              requieren clasificación según su sensibilidad.
+            </p>
+          </div>
+
+          <ul className="empresa-informacion-lista">
+            {datos.informacion_que_gestiona.map((item, i) => (
+              <li key={item} style={{ "--i": i }}>
+                <span className="empresa-informacion-icono" aria-hidden="true">
+                  {["🧑‍💼", "💰", "🧩", "📄", "📁"][i] ?? "•"}
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* ========== PROCESOS EMPRESARIALES (3 columnas, expandibles) ========== */}
       <div className="empresa-procesos">

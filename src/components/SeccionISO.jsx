@@ -88,6 +88,10 @@ export default function SeccionISO() {
         <p className="iso-normas">
           <strong>Norma principal:</strong> {meta.normaPrincipal}
         </p>
+        <p className="iso-normas-complementarias">
+          <strong>Normas complementarias:</strong>{" "}
+          {meta.normasComplementarias.join(" · ")}
+        </p>
       </header>
 
       {/* ============ PESTAÑAS ============ */}

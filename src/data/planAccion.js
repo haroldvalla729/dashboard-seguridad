@@ -54,20 +54,11 @@ export const planAccion = {
           "dias_calendario": 21
         }
       ],
-      "control": "A.8.5 · A.5.15 · A.5.18",
+      "control": "A.5.15 · A.8.2 · A.8.5",
       "controles_iso_27001_2022": [
-        {
-          "codigo": "8.5",
-          "nombre": "Autenticación segura"
-        },
-        {
-          "codigo": "5.15",
-          "nombre": "Control de acceso"
-        },
-        {
-          "codigo": "5.18",
-          "nombre": "Derechos de acceso"
-        }
+        { "codigo": "5.15", "nombre": "Control de acceso" },
+        { "codigo": "8.2", "nombre": "Derechos de acceso privilegiado" },
+        { "codigo": "8.5", "nombre": "Autenticación segura" }
       ],
       "actividades": [
         "Habilitar MFA en los accesos administrativos a la base PostgreSQL y a los sistemas críticos.",
@@ -114,16 +105,11 @@ export const planAccion = {
         "descripcion": "Talleres trimestrales; fecha de inicio no definida en el documento"
       },
       "plazos_complementarios": [],
-      "control": "A.6.3 · A.8.5",
+      "control": "A.6.3 · A.8.23 · A.5.14",
       "controles_iso_27001_2022": [
-        {
-          "codigo": "6.3",
-          "nombre": "Concienciación, educación y formación en seguridad de la información"
-        },
-        {
-          "codigo": "8.5",
-          "nombre": "Autenticación segura"
-        }
+        { "codigo": "6.3", "nombre": "Concienciación, educación y formación en seguridad de la información" },
+        { "codigo": "8.23", "nombre": "Filtrado web" },
+        { "codigo": "5.14", "nombre": "Transferencia de información" }
       ],
       "actividades": [
         "Realizar talleres trimestrales y simulaciones periódicas de correos engañosos para los 48 colaboradores.",
@@ -237,16 +223,11 @@ export const planAccion = {
         "descripcion": "Controles formales de acceso: 3 semanas"
       },
       "plazos_complementarios": [],
-      "control": "A.8.4 · A.5.18",
+      "control": "A.8.4 · A.5.11 · A.6.5",
       "controles_iso_27001_2022": [
-        {
-          "codigo": "8.4",
-          "nombre": "Acceso al código fuente"
-        },
-        {
-          "codigo": "5.18",
-          "nombre": "Derechos de acceso"
-        }
+        { "codigo": "8.4", "nombre": "Acceso al código fuente" },
+        { "codigo": "5.11", "nombre": "Devolución de activos" },
+        { "codigo": "6.5", "nombre": "Responsabilidades al finalizar el empleo" }
       ],
       "actividades": [
         "Revisar los privilegios sobre el repositorio GitLab y aplicar mínimo privilegio.",
@@ -293,16 +274,11 @@ export const planAccion = {
         "descripcion": "Plazo no indicado en el documento; debe programarse"
       },
       "plazos_complementarios": [],
-      "control": "A.8.1 · A.8.24",
+      "control": "A.8.1 · A.8.24 · A.7.9",
       "controles_iso_27001_2022": [
-        {
-          "codigo": "8.1",
-          "nombre": "Dispositivos de punto final de usuario"
-        },
-        {
-          "codigo": "8.24",
-          "nombre": "Uso de criptografía"
-        }
+        { "codigo": "8.1", "nombre": "Dispositivos de punto final de usuario" },
+        { "codigo": "8.24", "nombre": "Uso de criptografía" },
+        { "codigo": "7.9", "nombre": "Seguridad de activos fuera de las instalaciones" }
       ],
       "actividades": [
         "Habilitar cifrado completo de discos con BitLocker o FileVault en los 36 portátiles corporativos.",
